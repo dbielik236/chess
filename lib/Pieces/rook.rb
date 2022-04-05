@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'game'
-require_relative 'board'
-
 # Manages the color and legal moves of the Rooks
 class Rook
-  attr_accessor :color, :icon, :move_count
+  attr_accessor :color, :icon, :move_count, :name
 
   def initialize(color, icon)
     @color = color
     @icon = icon
-    @move_count = 0
+    @name = 'rook'
   end
 
   def legal_move?(start, finish)
