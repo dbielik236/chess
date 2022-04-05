@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "game"
-require_relative "board"
+require_relative 'game'
+require_relative 'board'
 
 # Manages the color and legal moves of the Rooks
 class Rook

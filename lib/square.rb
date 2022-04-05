@@ -1,4 +1,4 @@
-# frozen_string_literal :true
+# frozen_string_literal: true
 
 # This allows each square on the board to hold its own information
 class Square
