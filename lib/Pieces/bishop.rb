@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-# Manages the color and legal moves of the bishop
+# Manages the color and legal moves of the Bishops
 class Bishop
-  attr_accessor :color
-  attr_accessor :icon
-  attr_accessor :move_count
+  attr_accessor :color, :icon, :move_count
 
   def initialize(color, icon)
     @color = color
