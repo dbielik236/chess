@@ -3,7 +3,7 @@
 require_relative "game"
 require_relative "board"
 
-# Manages the color and legal moves of the Rook
+# Manages the color and legal moves of the Rooks
 class Rook
   attr_accessor :color, :icon, :move_count
 
