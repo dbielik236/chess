@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # Manages the color and legal moves of the bishop
-
 class Bishop
   attr_accessor :color
   attr_accessor :icon
