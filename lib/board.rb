@@ -93,8 +93,10 @@ class Board
   end
 
   def convert_location(location)
-    conversion = Hash[a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8]
-    # write some more stuff here
+    column_conversion = Hash[a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8]
+    row = location[1].to_i
+    column = column_conversion[:"#{location[0]}"]
+    [row, column]
   end
 
   def in_bounds?(location)
@@ -127,5 +129,12 @@ class Board
   end
 
   def move_pieces(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    retrieve_starting_piece(starting_location)
+    retrieve_ending_piece(ending_location)
+    
 
+  end
 end
+

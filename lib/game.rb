@@ -6,6 +6,8 @@ require_relative 'board'
 class Game
   attr_accessor :board, :human, :computer, :current_player
 
+  include Display
+  
   def initialize
     @board = Board.new
     @human = nil
@@ -13,10 +15,15 @@ class Game
     @current_player = nil
   end
 
+  def establish_player
+    
+
   def test
-    @board.display
+    @board.convert_location('f2')
   end
 end
 
 game = Game.new
-game.test
+conversion = game.test
+
+p conversion
