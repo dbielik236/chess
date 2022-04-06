@@ -92,6 +92,11 @@ class Board
     puts '  a  b  c  d  e  f  g  h'
   end
 
+  def convert_location(location)
+    conversion = Hash[a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8]
+    # write some more stuff here
+  end
+
   def in_bounds?(location)
     row, column = location
     row >= 0 && row <= 8 && column >= 0 && column <= 8
@@ -108,4 +113,19 @@ class Board
       end
     end
   end
+
+  def retrieve_ending_piece(location)
+    @grid.each do |row|
+      row.each do |square|
+        if square.location == location
+          @ending_piece = square.piece
+        else
+          next
+        end
+      end
+    end
+  end
+
+  def move_pieces(start, finish)
+
 end
