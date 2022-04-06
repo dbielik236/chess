@@ -92,14 +92,20 @@ class Board
     puts '  a  b  c  d  e  f  g  h'
   end
 
-  def move_piece
-    # 
-  end
-
   def in_bounds?(location)
     row, column = location
-    row >= 0 && row <= 8 && column && >=0 && column <=8
+    row >= 0 && row <= 8 && column >= 0 && column <= 8
   end
 
-
+  def retrieve_starting_piece(location)
+    @grid.each do |row|
+      row.each do |square|
+        if square.location == location
+          @starting_piece = square.piece
+        else
+          next
+        end
+      end
+    end
+  end
 end
