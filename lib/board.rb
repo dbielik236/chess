@@ -60,6 +60,8 @@ class Board
       [Square.new([5, 1]), Square.new([5, 2]), Square.new([5, 3]), Square.new([5, 4]), Square.new([5, 5]), Square.new([5, 6]), Square.new([5, 7]), Square.new([5, 8])],
       [Square.new([4, 1]), Square.new([4, 2]), Square.new([4, 3]), Square.new([4, 4]), Square.new([4, 5]), Square.new([4, 6]), Square.new([4, 7]), Square.new([4, 8])],
       [Square.new([3, 1]), Square.new([3, 2]), Square.new([3, 3]), Square.new([3, 4]), Square.new([3, 5]), Square.new([3, 6]), Square.new([3, 7]), Square.new([3, 8])],
+      [Square.new([2, 1], @white_pawn1), Square.new([2, 2], @white_pawn2), Square.new([2, 3], @white_pawn3), Square.new([2, 4], @white_pawn4), Square.new([2, 5], @white_pawn5), Square.new([2, 6], @white_pawn6), Square.new([2, 7], @white_pawn7), Square.new([2, 8], @white_pawn8)], 
+      [Square.new([1, 1], @white_rook1), Square.new([1, 2], @white_knight2), Square.new([1, 3], @white_bishop2), Square.new([1, 4], @white_queen), Square.new([1, 5], @white_king), Square.new([1, 6], @white_bishop2), Square.new([1, 7], @white_knight2), Square.new([1, 8], @white_rook2)]
     ]
   end
 
@@ -87,5 +89,6 @@ class Board
       puts "\n"
       switch_color
     end
+    puts '  a  b  c  d  e  f  g  h'
   end
 end
