@@ -8,7 +8,6 @@ require_relative './pieces/bishop'
 require_relative './pieces/queen'
 require_relative './pieces/king'
 
-
 # manages the grid, display, moving pieces, and check(mate)
 class Board
   attr_accessor :grid, :starting_piece, :ending_piece
@@ -25,8 +24,8 @@ class Board
     @white_pawn8 = Pawn.new('white', " \u2659 ")
     @white_rook1 = Rook.new('white', " \u2656 ")
     @white_rook2 = Rook.new('white', " \u2656 ")
-    @white_knight1 = Knight.new('white', " \u2658")
-    @white_knight2 = Knight.new('white', " \u2658")
+    @white_knight1 = Knight.new('white', " \u2658 ")
+    @white_knight2 = Knight.new('white', " \u2658 ")
     @white_bishop1 = Bishop.new('white', " \u2657 ")
     @white_bishop2 = Bishop.new('white', " \u2657 ")
     @white_queen = Queen.new('white', " \u2655 ")
@@ -43,20 +42,20 @@ class Board
     @black_pawn8 = Pawn.new('black', " \u265F ")
     @black_rook1 = Rook.new('black', " \u265C ")
     @black_rook2 = Rook.new('black', " \u265C ")
-    @black_knight1 = Knight.new('black', " \u265E")
-    @black_knight2 = Knight.new('black', " \u265E")
+    @black_knight1 = Knight.new('black', " \u265E ")
+    @black_knight2 = Knight.new('black', " \u265E ")
     @black_bishop1 = Bishop.new('black', " \u265D ")
     @black_bishop2 = Bishop.new('black', " \u265D ")
     @black_queen = Queen.new('black', " \u2657 ")
-    @black_king = King.new('black', " \u265A")
+    @black_king = King.new('black', " \u265A ")
 
     # grid color
     @color = 47
     @starting_piece = nil
     @ending_piece = nil
     @grid = [
-      [Square.new('8a', @white_rook), Square.new('8b', @black_rook), Square.new('8c'), Square.new('8d'), Square.new('8e'), Square.new('8f'), Square.new('8g'), Square.new('8h')], 
-      [Square.new('7a', @white_pawn1), Square.new('8b'), Square.new('8c'), Square.new('8d'), Square.new('8e'), Square.new('8f'), Square.new('8g'), Square.new('8h')]
+      [Square.new('8a', @black_rook1), Square.new('8b', @black_knight1), Square.new('8c', @black_bishop1), Square.new('8d', @black_queen), Square.new('8e', @black_king), Square.new('8f', @black_bishop2), Square.new('8g', @black_knight2), Square.new('8h', @black_rook2)], 
+      [Square.new('7a', @black_pawn1), Square.new('8b', @black_pawn2), Square.new('8c', @black_pawn3), Square.new('8d', @black_pawn4), Square.new('8e', @black_pawn5), Square.new('8f', @black_pawn6), Square.new('8g', @black_pawn7), Square.new('8h', @black_pawn8)]
     ]
   end
 
@@ -69,9 +68,9 @@ class Board
   end
 
   def display
-    p 'a  b  c  d  e  f  g  h'
-    @grid.each do |row|
-      print @grid.index
+    puts '  a  b  c  d  e  f  g  h'
+    @grid.each_with_index do |row, index|
+      print index + 1
       row.each do |square|
         if square.piece.nil?
           print "\e[#{@color}m#{"   "}\e[0m"
@@ -80,6 +79,7 @@ class Board
         end
         switch_color
       end
+      print index + 1
       puts "\n"
       switch_color
     end
