@@ -46,7 +46,7 @@ class Board
     @black_knight2 = Knight.new('black', " \u265E ")
     @black_bishop1 = Bishop.new('black', " \u265D ")
     @black_bishop2 = Bishop.new('black', " \u265D ")
-    @black_queen = Queen.new('black', " \u2657 ")
+    @black_queen = Queen.new('black', " \u265B ")
     @black_king = King.new('black', " \u265A ")
 
     # grid color
