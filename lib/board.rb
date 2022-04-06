@@ -54,8 +54,12 @@ class Board
     @starting_piece = nil
     @ending_piece = nil
     @grid = [
-      [Square.new('8a', @black_rook1), Square.new('8b', @black_knight1), Square.new('8c', @black_bishop1), Square.new('8d', @black_queen), Square.new('8e', @black_king), Square.new('8f', @black_bishop2), Square.new('8g', @black_knight2), Square.new('8h', @black_rook2)], 
-      [Square.new('7a', @black_pawn1), Square.new('8b', @black_pawn2), Square.new('8c', @black_pawn3), Square.new('8d', @black_pawn4), Square.new('8e', @black_pawn5), Square.new('8f', @black_pawn6), Square.new('8g', @black_pawn7), Square.new('8h', @black_pawn8)]
+      [Square.new([8, 1], @black_rook1), Square.new([8, 2], @black_knight1), Square.new([8, 3], @black_bishop1), Square.new([8, 4], @black_queen), Square.new([8, 5], @black_king), Square.new([8, 6], @black_bishop2), Square.new([8, 7], @black_knight2), Square.new([8, 8], @black_rook2)], 
+      [Square.new([7, 1], @black_pawn1), Square.new([7, 2], @black_pawn2), Square.new([7, 3], @black_pawn3), Square.new([7, 4], @black_pawn4), Square.new([7, 5], @black_pawn5), Square.new([7, 6], @black_pawn6), Square.new([7, 7], @black_pawn7), Square.new([7, 8], @black_pawn8)], 
+      [Square.new([6, 1]), Square.new([6, 2]), Square.new([6, 3]), Square.new([6, 4]), Square.new([6, 5]), Square.new([6, 6]), Square.new([6, 7]), Square.new([6, 8])], 
+      [Square.new([5, 1]), Square.new([5, 2]), Square.new([5, 3]), Square.new([5, 4]), Square.new([5, 5]), Square.new([5, 6]), Square.new([5, 7]), Square.new([5, 8])],
+      [Square.new([4, 1]), Square.new([4, 2]), Square.new([4, 3]), Square.new([4, 4]), Square.new([4, 5]), Square.new([4, 6]), Square.new([4, 7]), Square.new([4, 8])],
+      [Square.new([3, 1]), Square.new([3, 2]), Square.new([3, 3]), Square.new([3, 4]), Square.new([3, 5]), Square.new([3, 6]), Square.new([3, 7]), Square.new([3, 8])],
     ]
   end
 
