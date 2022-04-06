@@ -3,7 +3,7 @@
 # Manages the color and legal moves of the Knights
 class Knight
   attr_accessor :color, :icon, :move_count
-  
+
   def initialize(color, icon)
     @color = color
     @icon = icon
@@ -15,4 +15,3 @@ class Knight
     # 1 up/down and 2 left/right
   end
 end
-  

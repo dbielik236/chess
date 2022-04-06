@@ -14,4 +14,3 @@ class Queen
     # any number of horizontal, vertical, diagonal squares
   end
 end
-  

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "game"
-require_relative "board"
-
 # Manages the color and legal moves of the Pawns
 class Pawn
   attr_accessor :color, :icon, :move_count
@@ -21,6 +18,5 @@ class Pawn
     # diagonal forward only when attacking
 
     # en passant only if... ?
-  end    
+  end
 end
-  

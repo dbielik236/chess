@@ -3,7 +3,7 @@
 # Manages the color and legal moves of the Kings
 class King
   attr_accessor :color, :icon, :move_count
-  
+
   def initialize(color, icon)
     @color = color
     @icon = icon
@@ -14,4 +14,3 @@ class King
     # one square horizontal, vertical, diagonal
   end
 end
-  
