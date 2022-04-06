@@ -91,4 +91,15 @@ class Board
     end
     puts '  a  b  c  d  e  f  g  h'
   end
+
+  def move_piece
+    # 
+  end
+
+  def in_bounds?(location)
+    row, column = location
+    row >= 0 && row <= 8 && column && >=0 && column <=8
+  end
+
+
 end
