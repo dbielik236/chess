@@ -2,6 +2,8 @@
 
 require_relative 'board'
 require_relative 'prompts'
+require_relative 'human'
+require_relative 'computer'
 
 # controls the gameplay
 class Game
@@ -44,17 +46,35 @@ class Game
     # makes a move
   end
 
+
   def human_turn
     starting_piece_prompt
     starting_choice = gets.chomp.strip
-    ending_square_prompt
-    ending_choice = gets.chomp.strip
-    until @board.legal_move?(starting_choice, ending_choice, @current_player.color)
-      starting_piece_prompt
+    # checks to see if the player has used the correct format
+    until @board.correct_format?(starting_choice)
+      incorrect_format_prompt
       starting_choice = gets.chomp.strip
-      ending_square_prompt
+    end
+    # checks to makes sure that the player has a piece there
+    until @board.legal_start?(starting_choice, @human.color)
+      illegal_location_prompt
+      starting_choice = gets.chomp.strip
+    end
+    ending_square_prompt
+    #checks to see if the player used the right format
+    ending_choice = gets.chomp.strip
+    until @board.correct_format?(ending_choice)
+      incorrect_format_prompt
       ending_choice = gets.chomp.strip
     end
+    # checks that the finish square is available
+    until @board.legal_finish?(ending_choice, @human.color)
+      illegal_location_prompt
+      ending_choice = gets.chomp.strip
+    end
+    # until correct legal move for piece...?
+    @board.move_piece(starting_choice, ending_choice)
+    @board.replace_piece
   end
 
   def switch_current_player
@@ -67,18 +87,19 @@ class Game
 
   def take_turns
     @board.display
+    @current_player = @human
     human_turn
     @board.move_piece
     @board.replace_piece
     switch_current_player
-    computer_turn
+    @board.display
   end
 
   def play_game
+    @board.display
+    establish_player
+    establish_computer
     take_turns
   end
 end
-
-game = Game.new
-game.play_game
 

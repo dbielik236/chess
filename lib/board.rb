@@ -99,8 +99,16 @@ class Board
     [row, column]
   end
 
+  def correct_format?(location)
+    row_possibilities = 'abcdefgh'
+    column_possibilities = '12345678'
+    row_possibilities.include?(location[0]) && column_possibilities.include?(location[1])
+    
+  end
+
   def in_bounds?(location)
-    row, column = location
+    actual_loc = convert_location(location)
+    row, column = actual_loc
     row >= 0 && row <= 8 && column >= 0 && column <= 8
   end
 
@@ -113,7 +121,7 @@ class Board
   def legal_finish?(finish, color)
     ending_location = convert_location(finish)
     retrieve_end(ending_location)
-    @ending_piece.color == nil || @ending_piece.color != color
+    @ending_piece.nil? || @ending_piece.color != color
   end
 
   def legal_move?(start, finish, color)
