@@ -104,6 +104,26 @@ class Board
     row >= 0 && row <= 8 && column >= 0 && column <= 8
   end
 
+  def legal_start?(start, color)
+    starting_location = convert_location(start)
+    retrieve_start(starting_location)
+    @starting_piece.color == color
+  end
+
+  def legal_finish?(finish, color)
+    ending_location = convert_location(finish)
+    retrieve_end(ending_location)
+    @ending_piece.color == nil || @ending_piece.color != color
+  end
+
+  def legal_move?(start, finish, color)
+    in_bounds?(start)
+    in_bounds?(finish)
+    legal_start?(start, color)
+    legal_finish?(finish, color)
+    # legal move for piece
+  end
+
   def retrieve_start(location)
     @grid.each do |row|
       row.each do |square|
@@ -139,5 +159,8 @@ class Board
     @starting_square.piece = nil
   end
 
-
+  def replace_pieces
+    @ending_square.piece = @starting_square.piece
+    @starting_square.piece = nil
+  end
 end

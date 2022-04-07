@@ -18,13 +18,9 @@ class Game
 
   def establish_player
     player_name_prompt
-
-    #name needs to eliminate white space?
-    name = gets.chomp
+    name = gets.chomp.strip
     player_color_prompt
-
-    # again this needs white space eliminated
-    color = gets.chomp
+    color = gets.chomp.strip
     until color == 'w' or color == 'b'
       color_error_prompt
       color = gets.chomp
@@ -44,13 +40,45 @@ class Game
     end
   end
 
-  def test
+  def computer_turn
+    # makes a move
+  end
+
+  def human_turn
+    starting_piece_prompt
+    starting_choice = gets.chomp.strip
+    ending_square_prompt
+    ending_choice = gets.chomp.strip
+    until @board.legal_move?(starting_choice, ending_choice, @current_player.color)
+      starting_piece_prompt
+      starting_choice = gets.chomp.strip
+      ending_square_prompt
+      ending_choice = gets.chomp.strip
+    end
+  end
+
+  def switch_current_player
+    if @current_player = @human
+      @current_player = @computer
+    else
+      @current_player = @human
+    end
+  end
+
+  def take_turns
     @board.display
-    @board.move_piece('d7', 'd6')
-    @board.display
+    human_turn
+    @board.move_piece
+    @board.replace_piece
+    switch_current_player
+    computer_turn
+  end
+
+  def play_game
+    take_turns
   end
 end
 
 game = Game.new
-game.test
+game.play_game
 

@@ -20,11 +20,11 @@ module Display
   end
 
   def starting_piece_prompt
-    puts 'Please enter the location of the piece you\'d like to move. (for example, a1)'
+    puts 'Please enter the location of the piece you\'d like to move. First type the column letter and then the row number. For example, a1, or f5'
   end
 
-  def incorrect_location_format_prompt
-    puts 'Oops! Please use the correct format. First type the column letter and then the row number. For example, a1, or f5'
+  def ending_square_prompt
+    puts 'Please enter the location of the square where you\'d like to place your piece. First type the column letter and then the row number. For example, a1, or f5'
   end
 
   def illegal_location
