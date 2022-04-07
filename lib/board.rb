@@ -128,13 +128,12 @@ class Board
     end
   end
 
-  def move_pieces(start, finish)
+  def move_piece(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
     retrieve_starting_piece(starting_location)
     retrieve_ending_piece(ending_location)
-    
-
   end
-end
 
+
+end
