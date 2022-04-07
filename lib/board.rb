@@ -104,10 +104,11 @@ class Board
     row >= 0 && row <= 8 && column >= 0 && column <= 8
   end
 
-  def retrieve_starting_piece(location)
+  def retrieve_start(location)
     @grid.each do |row|
       row.each do |square|
         if square.location == location
+          @starting_square = square
           @starting_piece = square.piece
         else
           next
@@ -116,10 +117,11 @@ class Board
     end
   end
 
-  def retrieve_ending_piece(location)
+  def retrieve_end(location)
     @grid.each do |row|
       row.each do |square|
         if square.location == location
+          @ending_square = square
           @ending_piece = square.piece
         else
           next
@@ -131,8 +133,10 @@ class Board
   def move_piece(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
-    retrieve_starting_piece(starting_location)
-    retrieve_ending_piece(ending_location)
+    retrieve_start(starting_location)
+    retrieve_end(ending_location)
+    @ending_square.piece = @starting_square.piece
+    @starting_square.piece = nil
   end
 
 

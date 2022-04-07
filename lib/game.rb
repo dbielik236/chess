@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'board'
+require_relative 'prompts'
 
 # controls the gameplay
 class Game
@@ -44,9 +45,12 @@ class Game
   end
 
   def test
-    @board.convert_location('f2')
+    @board.display
+    @board.move_piece('d7', 'd6')
+    @board.display
   end
 end
 
 game = Game.new
+game.test
 
