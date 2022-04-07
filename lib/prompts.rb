@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'game'
+
 # holds all the display prompts
 module Display
 
@@ -12,7 +14,7 @@ module Display
   end
 
   def player_color_prompt
-    puts 'Choose your color (enter b or w)'
+    puts "Please choose your color (enter b or w)"
   end
 
   def color_error_prompt

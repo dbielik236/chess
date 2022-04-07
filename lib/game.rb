@@ -74,7 +74,6 @@ class Game
     end
     # until correct legal move for piece...?
     @board.move_piece(starting_choice, ending_choice)
-    @board.replace_piece
   end
 
   def switch_current_player
@@ -89,8 +88,6 @@ class Game
     @board.display
     @current_player = @human
     human_turn
-    @board.move_piece
-    @board.replace_piece
     switch_current_player
     @board.display
   end

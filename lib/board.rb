@@ -76,7 +76,7 @@ class Board
   def display
     puts '  a  b  c  d  e  f  g  h'
     @grid.each_with_index do |row, index|
-      print index + 1
+      print 8 - index
       row.each do |square|
         if square.piece.nil?
           print "\e[#{@color}m#{"   "}\e[0m"
@@ -85,7 +85,7 @@ class Board
         end
         switch_color
       end
-      print index + 1
+      print 8 - index
       puts "\n"
       switch_color
     end
@@ -103,7 +103,6 @@ class Board
     row_possibilities = 'abcdefgh'
     column_possibilities = '12345678'
     row_possibilities.include?(location[0]) && column_possibilities.include?(location[1])
-    
   end
 
   def in_bounds?(location)
@@ -115,7 +114,11 @@ class Board
   def legal_start?(start, color)
     starting_location = convert_location(start)
     retrieve_start(starting_location)
-    @starting_piece.color == color
+    if @starting_piece == nil || @starting_piece.color != color
+      false
+    elsif @starting_piece.color == color
+      true
+    end
   end
 
   def legal_finish?(finish, color)
@@ -163,11 +166,6 @@ class Board
     ending_location = convert_location(finish)
     retrieve_start(starting_location)
     retrieve_end(ending_location)
-    @ending_square.piece = @starting_square.piece
-    @starting_square.piece = nil
-  end
-
-  def replace_pieces
     @ending_square.piece = @starting_square.piece
     @starting_square.piece = nil
   end
