@@ -9,5 +9,4 @@ include Display
 welcome_prompt
 
 game = Game.new
-@board.display
 game.play_game

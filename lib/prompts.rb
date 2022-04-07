@@ -22,15 +22,15 @@ module Display
   end
 
   def starting_piece_prompt
-    puts 'Please enter the LOCATION of the PIECE you\'d like to MOVE. (First type the column letter and then the row number. For example, a1, or f5.)'
+    puts 'Choose a piece to move. (Example a1 or f7)'
   end
 
   def ending_square_prompt
-    puts 'Please enter the LOCATION of the SQUARE where you\'d like to PLACE your piece. (First type the column letter and then the row number. For example, a1, or f5.)'
+    puts 'Choose a space to move the piece to. (Example a1 or f7)'
   end
 
   def incorrect_format_prompt
-    puts 'Sorry! The format is incorrect. First type the column letter and then the row number. For example, a1, or f5.'
+    puts 'Sorry! The format is incorrect. Enter row-letter then column-number. For example, a1 or f7.'
   end
 
   def illegal_location_prompt
