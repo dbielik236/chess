@@ -14,7 +14,7 @@ module Display
   end
 
   def player_color_prompt
-    puts "Please choose your color (enter b or w)"
+    puts 'Please choose your color (enter b or w)'
   end
 
   def color_error_prompt
@@ -35,5 +35,9 @@ module Display
 
   def illegal_location_prompt
     puts 'Sorry! That is not a viable location. Please select again.'
+  end
+
+  def illegal_move_for_piece_prompt
+    puts 'Sorry! That piece can\'t move there. Please select viable location'
   end
 end

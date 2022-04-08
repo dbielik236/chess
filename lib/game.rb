@@ -46,7 +46,6 @@ class Game
     # makes a move
   end
 
-
   def human_turn
     starting_piece_prompt
     starting_choice = gets.chomp.strip
@@ -56,23 +55,27 @@ class Game
       starting_choice = gets.chomp.strip
     end
     # checks to makes sure that the player has a piece there
-    until @board.legal_start?(starting_choice, @human.color)
+    until @board.legal_start?(starting_choice, @current_player.color)
       illegal_location_prompt
       starting_choice = gets.chomp.strip
     end
     ending_square_prompt
-    #checks to see if the player used the right format
+    # checks to see if the player used the right format
     ending_choice = gets.chomp.strip
     until @board.correct_format?(ending_choice)
       incorrect_format_prompt
       ending_choice = gets.chomp.strip
     end
     # checks that the finish square is available
-    until @board.legal_finish?(ending_choice, @human.color)
+    until @board.legal_finish?(ending_choice, @current_player.color)
       illegal_location_prompt
       ending_choice = gets.chomp.strip
     end
     # until correct legal move for piece...?
+    until @board.legal_move_for_piece?(starting_choice, ending_choice)
+      illegal_location_prompt
+      ending_choice = gets.chomp.strip
+    end
     @board.move_piece(starting_choice, ending_choice)
   end
 

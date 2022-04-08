@@ -127,13 +127,15 @@ class Board
     @ending_piece.nil? || @ending_piece.color != color
   end
 
-  def legal_move?(start, finish, color)
-    in_bounds?(start)
-    in_bounds?(finish)
-    legal_start?(start, color)
-    legal_finish?(finish, color)
-    # legal move for piece
+  def legal_move_for_piece?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    @starting_piece.legal_move?(starting_location, ending_location, @starting_piece, @ending_piece)
   end
+
+
+
+
 
   def retrieve_start(location)
     @grid.each do |row|
