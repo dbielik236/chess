@@ -20,7 +20,7 @@ class Pawn
       possible_moves = []
 
       # allows the pawn to move forward one if the spot is open
-      possible_moves << [start_row.to_i + 1, start_column] if ending_piece.nil?
+      possible_moves << [start_row + 1, start_column] if ending_piece.nil?
 
       # allows the pawn to move
       possible_moves << [start_row + 2, start_column] if starting_piece.move_count.zero?
@@ -36,7 +36,7 @@ class Pawn
       possible_moves = []
 
       # allows the pawn to move forward one if the spot is open
-      possible_moves << [start_row.to_i - 1, start_column] if ending_piece.nil?
+      possible_moves << [start_row - 1, start_column] if ending_piece.nil?
 
       # allows the pawn to move
       possible_moves << [start_row - 2, start_column] if starting_piece.move_count.zero?

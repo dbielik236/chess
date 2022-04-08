@@ -10,8 +10,22 @@ class Knight
     @move_count = 0
   end
 
-  def legal_move?(start, finish)
-    # 2 up/down and 1 left/right or
-    # 1 up/down and 2 left/right
+  def legal_move?(start, finish, starting_piece, ending_piece)
+    start_row, start_column = start
+    possible_moves = []
+
+    # up and left
+    possible_moves << [start_row + 2, start_column - 1]
+
+    # up and right
+    possible_moves << [start_row + 2, start_column + 1]
+
+    # down and left
+    possible_moves << [start_row - 2, start_column - 1]
+
+    # down and right
+    possible_moves << [start_row - 2, start_column + 1]
+
+    possible_moves.include?(finish)
   end
 end
