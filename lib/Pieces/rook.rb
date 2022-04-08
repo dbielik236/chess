@@ -10,8 +10,14 @@ class Rook
     @name = 'rook'
   end
 
-  def legal_move?(start, finish)
-    # any number of horizontal, vertical
+  def legal_move?(start, finish, starting_piece, ending_piece)
+    start_row, start_column = start
+    possible_moves = []
+    i = 1
+    7.times do 
+      # Need to figure out how to get if a square is empty or not...
+    end
+
 
     # castle only if king and rook haven't moved?
   end

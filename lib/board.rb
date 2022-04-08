@@ -105,6 +105,7 @@ class Board
     row_possibilities.include?(location[0]) && column_possibilities.include?(location[1])
   end
 
+  # I don't think this is needed because the correct format method ensures that everything is valid
   def in_bounds?(location)
     actual_loc = convert_location(location)
     row, column = actual_loc
@@ -133,10 +134,6 @@ class Board
     @starting_piece.legal_move?(starting_location, ending_location, @starting_piece, @ending_piece)
   end
 
-
-
-
-
   def retrieve_start(location)
     @grid.each do |row|
       row.each do |square|
@@ -162,6 +159,19 @@ class Board
       end
     end
   end
+
+  def empty_square?(location)
+    @grid.each do |row|
+      row.each do |square|
+        if square.location == location
+          return square.piece.nil?
+        else
+          next
+        end
+      end
+    end
+  end
+
 
   def move_piece(start, finish)
     starting_location = convert_location(start)
