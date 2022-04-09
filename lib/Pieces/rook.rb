@@ -8,17 +8,35 @@ class Rook
     @color = color
     @icon = icon
     @move_count = 0
-
   end
 
   def legal_move?(start, finish, starting_piece, ending_piece)
     start_row, start_column = start
     possible_moves = []
-    i = 1
-    7.times do 
-      # Need to figure out how to get if a square is empty or not...
+    # forward
+    7.times do
+      start_row += 1
+      possible_moves << [start_row, start_column]
     end
-
+    # backward
+    start_row, start_column = start
+    7.times do
+      start_row -= 1
+      possible_moves << [start_row, start_column]
+    end
+    # left
+    start_row, start_column = start
+    7.times do
+      start_column -= 1
+      possible_moves << [start_row, start_column]
+    end
+    # right
+    start_row, start_column = start
+    7.times do
+      start_column += 1
+      possible_moves << [start_row, start_column]
+    end
+    possible_moves.include?(finish)
 
     # castle only if king and rook haven't moved?
   end
