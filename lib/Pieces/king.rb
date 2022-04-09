@@ -11,6 +11,24 @@ class King
   end
 
   def legal_move?(start, finish)
-    # one square horizontal, vertical, diagonal
+    start_row, start_column = start
+    possible_moves = []
+    # forward
+    possible_moves << [start_row + 1, start_column]
+    # backward
+    possible_moves << [start_row - 1, start_column]
+    # left
+    possible_moves << [start_row, start_column - 1]
+    # right
+    possible_moves << [start_row, start_column - 1]
+    # up left
+    possible_moves << [start_row + 1, start_column - 1]
+    # up right
+    possible_moves << [start_row + 1, start_column + 1]
+    # down left
+    possible_moves << [start_row - 1, start_column - 1]
+    # down right
+    possible_moves << [start_row - 1, start_column + 1]
+    possible_moves.include?(finish)
   end
 end
