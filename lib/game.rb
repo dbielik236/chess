@@ -67,12 +67,12 @@ class Game
       @ending_choice = gets.chomp.strip
     end
     # checks that the finish square is available
-    until @board.legal_finish?(@ending_choice, @current_player.color)
+    until @ending_choice == 'p' || @board.legal_finish?(@ending_choice, @current_player.color)
       illegal_ending_location_prompt
       @ending_choice = gets.chomp.strip
     end
     # until correct legal move for piece...?
-    until @board.legal_move_for_piece?(@starting_choice, @ending_choice)
+    until @ending_choice == 'p' || @board.legal_move_for_piece?(@starting_choice, @ending_choice)
       illegal_move_for_piece_prompt
       @ending_choice = gets.chomp.strip
     end

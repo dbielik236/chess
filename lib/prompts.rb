@@ -34,18 +34,18 @@ module Display
   end
 
   def illegal_ending_location_prompt
-    puts 'Illegal move. Please select again.'
+    puts 'Illegal move. Please select again. Or type p to choose another piece.'
   end
 
   def incorrect_format_prompt
-    puts 'The format is incorrect. Enter row-letter then column-number (for example, a1 or f7).'
+    puts 'The format is incorrect. Enter row-letter then column-number (for example, a1 or f7). '
   end
 
   def path_not_clear_prompt
-    puts 'Path not clear. Please choose again. If you are stuck, type p to choose another piece.'
+    puts 'Path not clear. Please choose again. Or type p to choose another piece.'
   end
 
   def illegal_move_for_piece_prompt
-    puts 'That piece cannot go there. Please choose again.'
+    puts 'That piece cannot go there. Please choose again. Or type p to choose another piece.'
   end
 end
