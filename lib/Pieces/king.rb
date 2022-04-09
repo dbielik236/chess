@@ -10,7 +10,7 @@ class King
     @move_count = 0
   end
 
-  def legal_move?(start, finish)
+  def legal_move?(start, finish, starting_piece, ending_piece)
     start_row, start_column = start
     possible_moves = []
     # forward
