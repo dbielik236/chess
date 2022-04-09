@@ -272,7 +272,92 @@ class Board
     end
   end
 
+  def forward_path_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    row, column = starting_location
+    results = []
+    until ending_location == [row, column]
+      row += 1
+      if retrieve_piece([row, column]).nil?
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
+  def back_ward_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    row, column = starting_location
+    results = []
+    until ending_location == [row, column]
+      row -= 1
+      if retrieve_piece([row, column]).nil?
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
   def vertical_path_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    start_row, start_column = starting_location
+    end_row, end_column = ending_location
+    if end_row > start_row
+      forward_clear?(start, finish)
+    elsif end_row < start_row
+      backward_clear?(start, finish)
+    end
+  end
+
+  def left_path_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    row, column = starting_location
+    results = []
+    until ending_location == [row, column]
+      column -= 1
+      if retrieve_piece([row, column]).nil?
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
+  def right_path_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    row, column = starting_location
+    results = []
+    until ending_location == [row, column]
+      column += 1
+      if retrieve_piece([row, column]).nil?
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
+  def horizontal_path_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    start_row, start_column = starting_location
+    end_row, end_column = ending_location
+    if end_column > start_column
+      right_clear?(start, finish)
+    elsif end_column < start_column
+      left_clear?(start, finish)
+    end
   end
 
   def move_piece(start, finish)
