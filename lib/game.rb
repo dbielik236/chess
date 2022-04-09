@@ -48,42 +48,44 @@ class Game
 
   def human_turn
     starting_piece_prompt
-    starting_choice = gets.chomp.strip
+    @starting_choice = gets.chomp.strip
     # checks to see if the player has used the correct format
-    until @board.correct_format?(starting_choice)
+    until @board.correct_format?(@starting_choice)
       incorrect_format_prompt
-      starting_choice = gets.chomp.strip
+      @starting_choice = gets.chomp.strip
     end
     # checks to makes sure that the player has a piece there
-    until @board.legal_start?(starting_choice, @current_player.color)
+    until @board.legal_start?(@starting_choice, @current_player.color)
       illegal_starting_location_prompt
-      starting_choice = gets.chomp.strip
+      @starting_choice = gets.chomp.strip
     end
     ending_square_prompt
     # checks to see if the player used the right format
-    ending_choice = gets.chomp.strip
-    until @board.correct_format?(ending_choice)
+    @ending_choice = gets.chomp.strip
+    until @board.correct_format?(@ending_choice)
       incorrect_format_prompt
-      ending_choice = gets.chomp.strip
+      @ending_choice = gets.chomp.strip
     end
     # checks that the finish square is available
-    until @board.legal_finish?(ending_choice, @current_player.color)
+    until @board.legal_finish?(@ending_choice, @current_player.color)
       illegal_ending_location_prompt
-      ending_choice = gets.chomp.strip
+      @ending_choice = gets.chomp.strip
     end
     # until correct legal move for piece...?
-    until @board.legal_move_for_piece?(starting_choice, ending_choice)
+    until @board.legal_move_for_piece?(@starting_choice, @ending_choice)
       illegal_move_for_piece_prompt
-      ending_choice = gets.chomp.strip
+      @ending_choice = gets.chomp.strip
     end
     # if piece is a bishop check diagonal lines for clear
-    if @board.retrieve_class(starting_choice) == Bishop
-      until @board.diagonal_clear?(starting_choice, ending_choice)
+    if @board.retrieve_class(@starting_choice) == Bishop
+      until @ending_choice == 'p' || @board.diagonal_clear?(@starting_choice, @ending_choice)
         path_not_clear_prompt
-        ending_choice = gets.chomp.strip
+        @ending_choice = gets.chomp.strip
       end
     end
-    @board.move_piece(starting_choice, ending_choice)
+    if @ending_choice == 'p'
+      human_turn
+    end
   end
 
   def switch_current_player
@@ -93,6 +95,11 @@ class Game
       @current_player = @human
     end
   end
+
+  def move_pieces
+    @board.move_piece(@starting_choice, @ending_choice)
+  end
+  
 
   def take_turns
     @board.display
@@ -108,10 +115,13 @@ class Game
     establish_computer
     @current_player = @human
     human_turn
+    move_pieces
     @board.display
     human_turn
+    move_pieces
     @board.display
     human_turn
+    move_pieces
     @board.display
   end
 
