@@ -2,10 +2,9 @@
 
 # establishes human's name and color choice
 class Computer
-    attr_accessor :name, :color
-  
-    def initialize(color)
-      @color = color
-    end
+  attr_accessor :name, :color
+
+  def initialize(color)
+    @color = color
   end
-  
+end

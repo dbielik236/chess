@@ -42,8 +42,54 @@ class Game
     end
   end
 
+  def random_square
+    row_choices = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    random_choice = []
+    random_choice << row_choices.sample
+    column_choices = ['1', '2', '3', '4', '5', '6', '7', '8']
+    random_choice << column_choices.sample
+    random_choice.join('')
+  end
+
   def computer_turn
-    # makes a move
+    @starting_choice = random_square
+    # checks to see if the player has used the correct format
+    until @board.correct_format?(@starting_choice)
+      @starting_choice = random_square
+    end
+    # checks to makes sure that the player has a piece there
+    until @board.legal_start?(@starting_choice, @current_player.color)
+      @starting_choice = random_square
+    end
+    # checks to see if the player used the right format
+    @ending_choice = random_square
+    until @board.correct_format?(@ending_choice)
+      @ending_choice = random_square
+    end
+    # checks that the finish square is available
+    until @board.legal_finish?(@ending_choice, @current_player.color)
+      @ending_choice = random_square
+    end
+    # until correct legal move for piece...?
+    until @board.legal_move_for_piece?(@starting_choice, @ending_choice)
+      @ending_choice = random_square
+    end
+    # if piece is a bishop check diagonal lines for clear
+    if @board.retrieve_class(@starting_choice) == Bishop
+      until @board.diagonal_clear?(@starting_choice, @ending_choice)
+        @ending_choice = random_square
+      end
+    end
+    if @board.retrieve_class(@starting_choice) == Rook
+      until @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
+        @ending_choice = random_square
+      end
+    end
+    if @board.retrieve_class(@starting_choice) == Queen
+      until @board.all_clear?(@starting_choice, @ending_choice)
+        @ending_choice = random_square
+      end
+    end
   end
 
   def human_turn
@@ -83,6 +129,18 @@ class Game
         @ending_choice = gets.chomp.strip
       end
     end
+    if @board.retrieve_class(@starting_choice) == Rook
+      until @ending_choice == 'p' || @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
+        path_not_clear_prompt
+        @ending_choice = gets.chomp.strip
+      end
+    end
+    if @board.retrieve_class(@starting_choice) == Queen
+      until @ending_choice == 'p' || @board.all_clear?(@starting_choice, @ending_choice)
+        path_not_clear_prompt
+        @ending_choice = gets.chomp.strip
+      end
+    end
     if @ending_choice == 'p'
       human_turn
     end
@@ -105,7 +163,9 @@ class Game
     @board.display
     @current_player = @human
     human_turn
+    move_pieces
     switch_current_player
+    computer_turn
     @board.display
   end
 
@@ -113,16 +173,9 @@ class Game
     @board.display
     establish_player
     establish_computer
-    @current_player = @human
-    human_turn
-    move_pieces
-    @board.display
-    human_turn
-    move_pieces
-    @board.display
-    human_turn
-    move_pieces
-    @board.display
+    10.times do
+      take_turns
+    end
   end
 
   def empty_square?(location)

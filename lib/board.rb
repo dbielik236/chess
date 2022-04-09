@@ -272,7 +272,7 @@ class Board
     end
   end
 
-  def forward_path_clear?(start, finish)
+  def forward_clear?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
     row, column = starting_location
@@ -288,7 +288,7 @@ class Board
     !results.include?(false)
   end
 
-  def back_ward_clear?(start, finish)
+  def backward_clear?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
     row, column = starting_location
@@ -304,19 +304,7 @@ class Board
     !results.include?(false)
   end
 
-  def vertical_path_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    start_row, start_column = starting_location
-    end_row, end_column = ending_location
-    if end_row > start_row
-      forward_clear?(start, finish)
-    elsif end_row < start_row
-      backward_clear?(start, finish)
-    end
-  end
-
-  def left_path_clear?(start, finish)
+  def left_clear?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
     row, column = starting_location
@@ -332,7 +320,7 @@ class Board
     !results.include?(false)
   end
 
-  def right_path_clear?(start, finish)
+  def right_clear?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
     row, column = starting_location
@@ -348,12 +336,40 @@ class Board
     !results.include?(false)
   end
 
-  def horizontal_path_clear?(start, finish)
+  def vertical_horizontal_clear?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
     start_row, start_column = starting_location
     end_row, end_column = ending_location
-    if end_column > start_column
+    if end_row > start_row
+      forward_clear?(start, finish)
+    elsif end_row < start_row
+      backward_clear?(start, finish)
+    elsif end_column > start_column
+      right_clear?(start, finish)
+    elsif end_column < start_column
+      left_clear?(start, finish)
+    end
+  end
+
+  def all_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    start_row, start_column = starting_location
+    end_row, end_column = ending_location
+    if end_row > start_row && end_column < start_column
+      up_left_clear?(start, finish)
+    elsif end_row > start_row && end_column > start_column
+      up_right_clear?(start, finish)
+    elsif end_row < start_row && end_column < start_column
+      down_left_clear?(start, finish)
+    elsif end_row < start_row && end_column > start_column
+      down_right_clear?(start, finish)
+    elsif end_row > start_row
+      forward_clear?(start, finish)
+    elsif end_row < start_row
+      backward_clear?(start, finish)
+    elsif end_column > start_column
       right_clear?(start, finish)
     elsif end_column < start_column
       left_clear?(start, finish)
