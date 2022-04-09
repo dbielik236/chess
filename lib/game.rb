@@ -56,7 +56,7 @@ class Game
     end
     # checks to makes sure that the player has a piece there
     until @board.legal_start?(starting_choice, @current_player.color)
-      illegal_location_prompt
+      illegal_starting_location_prompt
       starting_choice = gets.chomp.strip
     end
     ending_square_prompt
@@ -68,13 +68,20 @@ class Game
     end
     # checks that the finish square is available
     until @board.legal_finish?(ending_choice, @current_player.color)
-      illegal_location_prompt
+      illegal_ending_location_prompt
       ending_choice = gets.chomp.strip
     end
     # until correct legal move for piece...?
     until @board.legal_move_for_piece?(starting_choice, ending_choice)
-      illegal_location_prompt
+      illegal_move_for_piece_prompt
       ending_choice = gets.chomp.strip
+    end
+    # if piece is a bishop check diagonal lines for clear
+    if @board.retrieve_class(starting_choice) == Bishop
+      until @board.diagonal_clear?(starting_choice, ending_choice)
+        path_not_clear_prompt
+        ending_choice = gets.chomp.strip
+      end
     end
     @board.move_piece(starting_choice, ending_choice)
   end
@@ -99,7 +106,17 @@ class Game
     @board.display
     establish_player
     establish_computer
-    take_turns
+    @current_player = @human
+    human_turn
+    @board.display
+    human_turn
+    @board.display
+    human_turn
+    @board.display
   end
-end
 
+  def empty_square?(location)
+    @board.empty_square?([location])
+  end
+    
+end

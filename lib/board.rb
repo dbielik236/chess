@@ -102,7 +102,8 @@ class Board
   def correct_format?(location)
     row_possibilities = 'abcdefgh'
     column_possibilities = '12345678'
-    row_possibilities.include?(location[0]) && column_possibilities.include?(location[1])
+
+    !location[0].nil? && !location[1].nil? && row_possibilities.include?(location[0]) && column_possibilities.include?(location[1])
   end
 
   # I don't think this is needed because the correct format method ensures that everything is valid
@@ -160,18 +161,119 @@ class Board
     end
   end
 
-  def empty_square?(location)
+  def retrieve_class(location)
+    actual_loc = convert_location(location)
     @grid.each do |row|
       row.each do |square|
-        if square.location == location
-          return square.piece.nil?
+        if square.location == actual_loc
+          @starting_piece = square.piece
         else
           next
         end
       end
     end
+    @starting_piece.class
   end
 
+  def retrieve_piece(location)
+    @grid.each do |row|
+      row.each do |square|
+        if square.location == location
+          @current_piece = square.piece
+        else
+          next
+        end
+      end
+    end
+    @current_piece
+  end
+
+  def up_left_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    row, column = starting_location
+    results = []
+    until ending_location == [row, column]
+      row += 1
+      column -= 1
+      if retrieve_piece([row, column]).nil?
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
+  def up_right_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    row, column = starting_location
+    results = []
+    until ending_location == [row, column]
+      row += 1
+      column += 1
+      if retrieve_piece([row, column]).nil?
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
+  def down_left_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    row, column = starting_location
+    results = []
+    until ending_location == [row, column]
+      row -= 1
+      column -= 1
+      if retrieve_piece([row, column]).nil?
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
+  def down_right_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    row, column = starting_location
+    results = []
+    until ending_location == [row, column]
+      row -= 1
+      column += 1
+      if retrieve_piece([row, column]).nil?
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
+  def diagonal_clear?(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    start_row, start_column = starting_location
+    end_row, end_column = ending_location
+    if end_row > start_row && end_column < start_column
+      up_left_clear?(start, finish)
+    elsif end_row > start_row && end_column > start_column
+      up_right_clear?(start, finish)
+    elsif end_row < start_row && end_column < start_column
+      down_left_clear?(start, finish)
+    elsif end_row < start_row && end_column > start_column
+      down_right_clear?(start, finish)
+    end
+  end
+
+  def vertical_path_clear?(start, finish)
+  end
 
   def move_piece(start, finish)
     starting_location = convert_location(start)
@@ -179,6 +281,7 @@ class Board
     retrieve_start(starting_location)
     retrieve_end(ending_location)
     @ending_square.piece = @starting_square.piece
+    @starting_square.piece.move_count += 1
     @starting_square.piece = nil
   end
 end

@@ -7,7 +7,8 @@ class Rook
   def initialize(color, icon)
     @color = color
     @icon = icon
-    @name = 'rook'
+    @move_count = 0
+
   end
 
   def legal_move?(start, finish, starting_piece, ending_piece)
