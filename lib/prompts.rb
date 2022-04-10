@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'game'
+require_relative 'board'
 
 # holds all the display prompts
 module Display
@@ -47,5 +48,9 @@ module Display
 
   def illegal_move_for_piece_prompt
     puts 'That piece cannot go there. Please choose again. Or type p to choose another piece.'
+  end
+
+  def display_computer_turn
+    puts "The computer moved from #{@starting_choice} to #{@ending_choice}."
   end
 end

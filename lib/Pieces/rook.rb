@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Manages the color and legal moves of the Rooks
+#  determines color, icon, move count, and legal moves of the Rooks
 class Rook
-  attr_accessor :color, :icon, :move_count, :name
+  attr_accessor :color, :icon, :move_count
 
   def initialize(color, icon)
     @color = color

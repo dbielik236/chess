@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Manages the color and legal moves of the Kings
+# determines color, icon, move count, and legal moves of the Kings
 class King
   attr_accessor :color, :icon, :move_count
 
@@ -20,7 +20,7 @@ class King
     # left
     possible_moves << [start_row, start_column - 1]
     # right
-    possible_moves << [start_row, start_column - 1]
+    possible_moves << [start_row, start_column + 1]
     # up left
     possible_moves << [start_row + 1, start_column - 1]
     # up right

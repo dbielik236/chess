@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Manages the color and legal moves of the Queens
+# determines color, icon, move count, and legal moves of the Queens
 class Queen
   attr_accessor :color, :icon, :move_count
 

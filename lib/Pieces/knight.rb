@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Manages the color and legal moves of the Knights
+# determines color, icon, move count, and legal moves of the Knights
 class Knight
   attr_accessor :color, :icon, :move_count
 
@@ -14,17 +14,29 @@ class Knight
     start_row, start_column = start
     possible_moves = []
 
-    # up and left
+    # up 2 and left 1
     possible_moves << [start_row + 2, start_column - 1]
 
-    # up and right
+    # up 1 and left 2
+    possible_moves << [start_row + 1, start_column - 2]
+
+    # up 2 and right 1
     possible_moves << [start_row + 2, start_column + 1]
 
-    # down and left
+    # up 1 and right 2
+    possible_moves << [start_row + 1, start_column + 2]
+
+    # down 2 and left 1
     possible_moves << [start_row - 2, start_column - 1]
 
-    # down and right
+    # down 1 and left 2
+    possible_moves << [start_row - 1, start_column - 2]
+
+    # down 2 and right 1
     possible_moves << [start_row - 2, start_column + 1]
+
+    # down 1 and right 2
+    possible_moves << [start_row - 1, start_column + 2]
 
     possible_moves.include?(finish)
   end

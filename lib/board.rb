@@ -51,8 +51,6 @@ class Board
 
     # grid color
     @color = 47
-    @starting_piece = nil
-    @ending_piece = nil
     @grid = [
       [Square.new([8, 1], @black_rook1), Square.new([8, 2], @black_knight1), Square.new([8, 3], @black_bishop1), Square.new([8, 4], @black_queen), Square.new([8, 5], @black_king), Square.new([8, 6], @black_bishop2), Square.new([8, 7], @black_knight2), Square.new([8, 8], @black_rook2)], 
       [Square.new([7, 1], @black_pawn1), Square.new([7, 2], @black_pawn2), Square.new([7, 3], @black_pawn3), Square.new([7, 4], @black_pawn4), Square.new([7, 5], @black_pawn5), Square.new([7, 6], @black_pawn6), Square.new([7, 7], @black_pawn7), Square.new([7, 8], @black_pawn8)], 
@@ -193,14 +191,16 @@ class Board
     ending_location = convert_location(finish)
     row, column = starting_location
     results = []
+    row += 1
+    column -= 1
     until ending_location == [row, column]
-      row += 1
-      column -= 1
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
+      row += 1
+      column -= 1
     end
     !results.include?(false)
   end
@@ -210,14 +210,16 @@ class Board
     ending_location = convert_location(finish)
     row, column = starting_location
     results = []
+    row += 1
+    column += 1
     until ending_location == [row, column]
-      row += 1
-      column += 1
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
+      row += 1
+      column += 1
     end
     !results.include?(false)
   end
@@ -227,14 +229,16 @@ class Board
     ending_location = convert_location(finish)
     row, column = starting_location
     results = []
+    row -= 1
+    column -= 1
     until ending_location == [row, column]
-      row -= 1
-      column -= 1
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
+      row -= 1
+      column -= 1
     end
     !results.include?(false)
   end
@@ -244,14 +248,16 @@ class Board
     ending_location = convert_location(finish)
     row, column = starting_location
     results = []
+    row -= 1
+    column += 1
     until ending_location == [row, column]
-      row -= 1
-      column += 1
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
+      row -= 1
+      column += 1
     end
     !results.include?(false)
   end
@@ -277,13 +283,14 @@ class Board
     ending_location = convert_location(finish)
     row, column = starting_location
     results = []
+    row += 1
     until ending_location == [row, column]
-      row += 1
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
+      row += 1
     end
     !results.include?(false)
   end
@@ -293,13 +300,14 @@ class Board
     ending_location = convert_location(finish)
     row, column = starting_location
     results = []
+    row -= 1
     until ending_location == [row, column]
-      row -= 1
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
+      row -= 1
     end
     !results.include?(false)
   end
@@ -309,13 +317,14 @@ class Board
     ending_location = convert_location(finish)
     row, column = starting_location
     results = []
+    column -= 1
     until ending_location == [row, column]
-      column -= 1
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
+      column -= 1
     end
     !results.include?(false)
   end
@@ -325,13 +334,14 @@ class Board
     ending_location = convert_location(finish)
     row, column = starting_location
     results = []
+    column += 1
     until ending_location == [row, column]
-      column += 1
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
+      column += 1
     end
     !results.include?(false)
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Manages the color and legal moves of the Bishops
+# determines color, icon, move count, and legal moves of the Bishops
 class Bishop
   attr_accessor :color, :icon, :move_count
 

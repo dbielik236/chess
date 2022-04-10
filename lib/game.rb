@@ -53,41 +53,28 @@ class Game
 
   def computer_turn
     @starting_choice = random_square
-    # checks to see if the player has used the correct format
-    until @board.correct_format?(@starting_choice)
-      @starting_choice = random_square
-    end
     # checks to makes sure that the player has a piece there
     until @board.legal_start?(@starting_choice, @current_player.color)
       @starting_choice = random_square
     end
-    # checks to see if the player used the right format
     @ending_choice = random_square
-    until @board.correct_format?(@ending_choice)
+    until @board.legal_finish?(@ending_choice, @current_player.color) && @board.legal_move_for_piece?(@starting_choice, @ending_choice)
       @ending_choice = random_square
     end
     # checks that the finish square is available
-    until @board.legal_finish?(@ending_choice, @current_player.color)
-      @ending_choice = random_square
-    end
-    # until correct legal move for piece...?
-    until @board.legal_move_for_piece?(@starting_choice, @ending_choice)
-      @ending_choice = random_square
-    end
-    # if piece is a bishop check diagonal lines for clear
     if @board.retrieve_class(@starting_choice) == Bishop
-      until @board.diagonal_clear?(@starting_choice, @ending_choice)
-        @ending_choice = random_square
+      unless @board.diagonal_clear?(@starting_choice, @ending_choice)
+        computer_turn
       end
     end
     if @board.retrieve_class(@starting_choice) == Rook
-      until @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
-        @ending_choice = random_square
+      unless @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
+        computer_turn
       end
     end
     if @board.retrieve_class(@starting_choice) == Queen
       until @board.all_clear?(@starting_choice, @ending_choice)
-        @ending_choice = random_square
+        computer_turn
       end
     end
   end
@@ -149,7 +136,7 @@ class Game
   def switch_current_player
     if @current_player == @computer || @current_player == nil
       @current_player = @human
-    else
+    elsif @current_player == @human
       @current_player = @computer
     end
   end
@@ -157,7 +144,6 @@ class Game
   def move_pieces
     @board.move_piece(@starting_choice, @ending_choice)
   end
-  
 
   def take_turns
     switch_current_player
@@ -168,6 +154,7 @@ class Game
     computer_turn
     move_pieces
     @board.display
+    display_computer_turn
   end
 
   def play_game
@@ -183,5 +170,4 @@ class Game
   def empty_square?(location)
     @board.empty_square?([location])
   end
-    
 end
