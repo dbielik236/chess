@@ -147,10 +147,10 @@ class Game
   end
 
   def switch_current_player
-    if @current_player = @human
-      @current_player = @computer
-    else
+    if @current_player == @computer || @current_player == nil
       @current_player = @human
+    else
+      @current_player = @computer
     end
   end
 
@@ -160,12 +160,13 @@ class Game
   
 
   def take_turns
-    @board.display
-    @current_player = @human
+    switch_current_player
     human_turn
     move_pieces
+    @board.display
     switch_current_player
     computer_turn
+    move_pieces
     @board.display
   end
 
@@ -173,6 +174,7 @@ class Game
     @board.display
     establish_player
     establish_computer
+    @board.display
     10.times do
       take_turns
     end
