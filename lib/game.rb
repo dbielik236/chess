@@ -52,6 +52,7 @@ class Game
   end
 
   def computer_turn
+    i = 0
     @starting_choice = random_square
     # checks to makes sure that the player has a piece there
     until @board.legal_start?(@starting_choice, @current_player.color)
@@ -60,6 +61,10 @@ class Game
     @ending_choice = random_square
     until @board.legal_finish?(@ending_choice, @current_player.color) && @board.legal_move_for_piece?(@starting_choice, @ending_choice)
       @ending_choice = random_square
+      i += 1
+      if i == 1_000 
+        computer_turn
+      end
     end
     # checks that the finish square is available
     if @board.retrieve_class(@starting_choice) == Bishop
@@ -162,7 +167,7 @@ class Game
     establish_player
     establish_computer
     @board.display
-    10.times do
+    30.times do
       take_turns
     end
   end
