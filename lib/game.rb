@@ -51,6 +51,41 @@ class Game
     random_choice.join('')
   end
 
+  def create_list
+    rows = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    columns = ['1', '2', '3', '4', '5', '6', '7', '8']
+    every_location = []
+    num = 0
+    8.times do
+      columns.each do |column|
+        every_location << rows[num] + column
+      end
+      num += 1
+    end
+    every_location
+  end
+
+  def in_check?(ending_location)
+    results = []
+    list = create_list
+    list.each do |starting_location|
+      if @board.legal_start?(starting_location, @current_player.color) &&
+         @board.legal_finish?(ending_location, @current_player.color) &&
+         if @board.retrieve_class(starting_location) == Bishop
+           @board.diagonal_clear?(starting_location, ending_location)
+         elsif @board.retrieve_class(starting_location) == Rook
+           @board.vertical_horizontal_clear?(starting_location, ending_location)
+         elsif @board.retrieve_class(starting_location) == Queen
+           @board.all_clear?(starting_location, ending_location)
+         end
+        results << true
+      else
+        results << false
+      end
+    end
+    !results.include?(false)
+  end
+
   def computer_turn
     @starting_choice = random_square
     # checks to makes sure that the player has a piece there
@@ -148,10 +183,16 @@ class Game
   def take_turns
     switch_current_player
     human_turn
+    if in_check?(@ending_choice) == false
+      puts "ALL CLEAR!"
+    end
     move_pieces
     @board.display
     switch_current_player
     computer_turn
+    if in_check?(@ending_choice) == false
+      puts "ALL CLEAR!"
+    end
     move_pieces
     @board.display
     display_computer_turn

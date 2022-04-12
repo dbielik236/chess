@@ -176,14 +176,11 @@ class Board
   def retrieve_piece(location)
     @grid.each do |row|
       row.each do |square|
-        if square.location == location
-          @current_piece = square.piece
-        else
-          next
-        end
+        next unless square.location == location
+
+        @current_piece = square.piece
       end
     end
-    @current_piece
   end
 
   def up_left_clear?(start, finish)
@@ -193,14 +190,13 @@ class Board
     results = []
     row += 1
     column -= 1
-    until ending_location == [row, column]
-      if retrieve_piece([row, column]).nil?
-        results << true
-      else
-        results << false
-      end
+    i = 1
+    until i == 9 || ending_location == [row, column]
+      retrieve_piece([row, column])
+      results << @current_piece.nil?
       row += 1
       column -= 1
+      i += 1
     end
     !results.include?(false)
   end
@@ -212,7 +208,8 @@ class Board
     results = []
     row += 1
     column += 1
-    until ending_location == [row, column]
+    i = 1
+    until i == 9 || ending_location == [row, column]
       if retrieve_piece([row, column]).nil?
         results << true
       else
@@ -220,6 +217,7 @@ class Board
       end
       row += 1
       column += 1
+      i += 1
     end
     !results.include?(false)
   end
@@ -231,7 +229,8 @@ class Board
     results = []
     row -= 1
     column -= 1
-    until ending_location == [row, column]
+    i = 1
+    until i == 9 || ending_location == [row, column]
       if retrieve_piece([row, column]).nil?
         results << true
       else
@@ -239,6 +238,7 @@ class Board
       end
       row -= 1
       column -= 1
+      i += 1
     end
     !results.include?(false)
   end
@@ -250,7 +250,8 @@ class Board
     results = []
     row -= 1
     column += 1
-    until ending_location == [row, column]
+    i = 1
+    until i == 9 || ending_location == [row, column]
       if retrieve_piece([row, column]).nil?
         results << true
       else
@@ -258,6 +259,7 @@ class Board
       end
       row -= 1
       column += 1
+      i += 1
     end
     !results.include?(false)
   end
@@ -284,13 +286,15 @@ class Board
     row, column = starting_location
     results = []
     row += 1
-    until ending_location == [row, column]
+    i = 1
+    until i == 9 || ending_location == [row, column]
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
       row += 1
+      i += 1
     end
     !results.include?(false)
   end
@@ -301,13 +305,15 @@ class Board
     row, column = starting_location
     results = []
     row -= 1
-    until ending_location == [row, column]
+    i = 1
+    until i == 9 || ending_location == [row, column]
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
       row -= 1
+      i += 1
     end
     !results.include?(false)
   end
@@ -318,13 +324,15 @@ class Board
     row, column = starting_location
     results = []
     column -= 1
-    until ending_location == [row, column]
+    i = 1
+    until i == 9 || ending_location == [row, column]
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
       column -= 1
+      i += 1
     end
     !results.include?(false)
   end
@@ -335,13 +343,15 @@ class Board
     row, column = starting_location
     results = []
     column += 1
-    until ending_location == [row, column]
+    i = 1
+    until i == 9 || ending_location == [row, column]
       if retrieve_piece([row, column]).nil?
         results << true
       else
         results << false
       end
       column += 1
+      i += 1
     end
     !results.include?(false)
   end
