@@ -53,4 +53,13 @@ module Display
   def display_computer_turn
     puts "The computer moved from #{@starting_choice} to #{@ending_choice}."
   end
+
+  def king_is_in_check_prompt
+    puts "Your king is in check. You must move it."
+  end
+
+  def space_will_put_king_in_check_prompt
+    puts "That will put your king in check. Pick a new piece to move."
+  end
+  
 end

@@ -119,15 +119,19 @@ class Game
   end
 
   # I think this is ready too
-  def space_will_put_king_in_check?
-    in_check?(@ending_choice)
+  def space_will_put_king_in_check?(location)
+    in_check?(location)
   end
 
   def computer_turn
-    @starting_choice = random_square
-    # checks to makes sure that the player has a piece there
-    until @board.legal_start?(@starting_choice, @current_player.color)
+    if king_is_in_check?
+      @starting_choice = revert_location(@board.retrieve_location(King))
+    else
       @starting_choice = random_square
+      # checks to makes sure that the player has a piece there
+      until @board.legal_start?(@starting_choice, @current_player.color)
+        @starting_choice = random_square
+      end
     end
     @ending_choice = random_square
     unless @board.legal_finish?(@ending_choice, @current_player.color) && @board.legal_move_for_piece?(@starting_choice, @ending_choice)
@@ -149,10 +153,14 @@ class Game
         computer_turn
       end
     end
+    if space_will_put_king_in_check?(@ending_choice)
+      computer_turn
+    end
   end
 
   def human_turn
     if king_is_in_check?
+      king_is_in_check_prompt
       @starting_choice = revert_location(@board.retrieve_location(King))
     else
       starting_piece_prompt
@@ -205,6 +213,10 @@ class Game
       end
     end
     if @ending_choice == 'p'
+      human_turn
+    end
+    if space_will_put_king_in_check?(@ending_choice)
+      space_will_put_king_in_check_prompt
       human_turn
     end
   end
