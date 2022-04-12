@@ -86,6 +86,8 @@ class Game
     !results.include?(false)
   end
 
+
+
   def computer_turn
     @starting_choice = random_square
     # checks to makes sure that the player has a piece there
@@ -168,8 +170,15 @@ class Game
     end
   end
 
+  def establish_current_player
+    if @human.color == 'w'
+      @current_player = @human
+    else
+      @current_player = @computer
+  end
+
   def switch_current_player
-    if @current_player == @computer || @current_player == nil
+    if @current_player == @computer
       @current_player = @human
     elsif @current_player == @human
       @current_player = @computer
@@ -180,17 +189,19 @@ class Game
     @board.move_piece(@starting_choice, @ending_choice)
   end
 
+  def one_turn(current_player)
+
+
+
   def take_turns
     switch_current_player
     human_turn
-    if in_check?(@ending_choice) == false
-      puts "ALL CLEAR!"
     end
     move_pieces
     @board.display
     switch_current_player
     computer_turn
-    if in_check?(@ending_choice) == false
+    if in_check?(@ending_choice) == true
       puts "ALL CLEAR!"
     end
     move_pieces
