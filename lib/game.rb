@@ -171,10 +171,11 @@ class Game
   end
 
   def establish_current_player
-    if @human.color == 'w'
+    if @human.color == 'white'
       @current_player = @human
     else
       @current_player = @computer
+    end
   end
 
   def switch_current_player
@@ -189,33 +190,28 @@ class Game
     @board.move_piece(@starting_choice, @ending_choice)
   end
 
-  def one_turn(current_player)
-
-
-
-  def take_turns
-    switch_current_player
-    human_turn
+  def one_turn
+    if @current_player == @human
+      human_turn
+    else
+      computer_turn
     end
-    move_pieces
-    @board.display
-    switch_current_player
-    computer_turn
-    if in_check?(@ending_choice) == true
-      puts "ALL CLEAR!"
-    end
-    move_pieces
-    @board.display
-    display_computer_turn
   end
 
   def play_game
     @board.display
     establish_player
     establish_computer
+    establish_current_player
     @board.display
     30.times do
-      take_turns
+      one_turn
+      move_pieces
+      @board.display
+      if @current_player == @computer
+        display_computer_turn
+      end
+      switch_current_player
     end
   end
 
