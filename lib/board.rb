@@ -90,6 +90,7 @@ class Board
     puts '  a  b  c  d  e  f  g  h'
   end
 
+  # private method?
   def convert_location(location)
     column_conversion = Hash[a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8]
     row = location[1].to_i
@@ -127,12 +128,14 @@ class Board
     @ending_piece.nil? || @ending_piece.color != color
   end
 
+
   def legal_move_for_piece?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
     @starting_piece.legal_move?(starting_location, ending_location, @starting_piece, @ending_piece)
   end
 
+  # private method?
   def retrieve_start(location)
     @grid.each do |row|
       row.each do |square|
@@ -146,6 +149,7 @@ class Board
     end
   end
 
+  # private method?
   def retrieve_end(location)
     @grid.each do |row|
       row.each do |square|
@@ -159,6 +163,7 @@ class Board
     end
   end
 
+  # used by board class
   def retrieve_class(location)
     actual_loc = convert_location(location)
     @grid.each do |row|
@@ -173,12 +178,24 @@ class Board
     @starting_piece.class
   end
 
+  # this seems redundant
   def retrieve_piece(location)
     @grid.each do |row|
       row.each do |square|
         next unless square.location == location
 
         @current_piece = square.piece
+      end
+    end
+  end
+
+  # can this be combined with others? 
+  def retrieve_location(piece)
+    @grid.each do |row|
+      row.each do |square|
+        next unless square.instance_of?(piece) && square.piece.color == @current_player.color
+
+        square.location
       end
     end
   end

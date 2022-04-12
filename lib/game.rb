@@ -65,6 +65,13 @@ class Game
     every_location
   end
 
+  def revert_location(location)
+    row_conversion = Hash[1 => 'a', 2 => 'b', 3 => 'c', 4 => 'd', 5 => 'e', 6 => 'f', 7 => 'g', 8 => 'h']
+    row, column = location
+    row = row_conversion[row]
+    "#{row}#{column}"
+  end
+
   def in_check?(ending_location)
     results = []
     list = create_list
@@ -86,7 +93,35 @@ class Game
     !results.include?(false)
   end
 
+  def piece_is_a_king?(location)
+    retrieve_class(location) == King
+  end
 
+  # I think this is ready
+  def king_is_in_check?
+    location = retrieve_location(King)
+    chess_notation_location = revert_location(location)
+    in_check?(chess_notation_location)
+  end
+
+  def check_mate?
+    location = retrieve_location(King)
+    row, column = location
+    in_check?(revert_location([row, column])) &&
+      in_check?(revert_location([row + 1, column])) &&
+      in_check?(revert_location([row - 1, column])) &&
+      in_check?(revert_location([row, column + 1])) &&
+      in_check?(revert_location([row, column + 1])) &&
+      in_check?(revert_location([row + 1, column + 1])) &&
+      in_check?(revert_location([row - 1, column - 1])) &&
+      in_check?(revert_location([row + 1, column - 1])) &&
+      in_check?(revert_location([row - 1, column + 1]))
+  end
+
+  # I think this is ready too
+  def space_will_put_king_in_check?
+    in_check?(@ending_choice)
+  end
 
   def computer_turn
     @starting_choice = random_square
@@ -117,17 +152,21 @@ class Game
   end
 
   def human_turn
-    starting_piece_prompt
-    @starting_choice = gets.chomp.strip
-    # checks to see if the player has used the correct format
-    until @board.correct_format?(@starting_choice)
-      incorrect_format_prompt
+    if king_is_in_check?
+      @starting_choice = revert_location(@board.retrieve_location(King))
+    else
+      starting_piece_prompt
       @starting_choice = gets.chomp.strip
-    end
-    # checks to makes sure that the player has a piece there
-    until @board.legal_start?(@starting_choice, @current_player.color)
-      illegal_starting_location_prompt
-      @starting_choice = gets.chomp.strip
+      # checks to see if the player has used the correct format
+      until @board.correct_format?(@starting_choice)
+        incorrect_format_prompt
+        @starting_choice = gets.chomp.strip
+      end
+      # checks to makes sure that the player has a piece there
+      until @board.legal_start?(@starting_choice, @current_player.color)
+        illegal_starting_location_prompt
+        @starting_choice = gets.chomp.strip
+      end
     end
     ending_square_prompt
     # checks to see if the player used the right format
