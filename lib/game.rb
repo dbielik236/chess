@@ -141,7 +141,8 @@ class Game
     ]
     possible_moves.each do |loc|
       if @board.on_the_board?(loc)
-        results << in_check?(revert_location(loc))
+        in_check?(revert_location(loc))
+        results << @check
       end
     end
     !results.include?(false)
@@ -288,8 +289,7 @@ class Game
     @board.display
     one_turn
     until check_mate?
-      king_is_in_check?
-      if king_is_in_check?
+      if @check == true
         king_is_in_check_prompt
       else
         puts "King is not check.."
