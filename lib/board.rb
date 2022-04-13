@@ -105,11 +105,9 @@ class Board
     !location[0].nil? && !location[1].nil? && row_possibilities.include?(location[0]) && column_possibilities.include?(location[1])
   end
 
-  # I don't think this is needed because the correct format method ensures that everything is valid
-  def in_bounds?(location)
-    actual_loc = convert_location(location)
-    row, column = actual_loc
-    row >= 0 && row <= 8 && column >= 0 && column <= 8
+  def on_the_board?(location)
+    row, column = location
+    row >= 1 && row <= 8 && column >= 1 && column <= 8
   end
 
   def legal_start?(start, color)
@@ -127,8 +125,7 @@ class Board
     retrieve_end(ending_location)
     @ending_piece.nil? || @ending_piece.color != color
   end
-
-
+  
   def legal_move_for_piece?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
@@ -189,15 +186,21 @@ class Board
     end
   end
 
-  # can this be combined with others? 
-  def retrieve_location(piece)
+  # can this be combined with others?
+  def retrieve_location(type_of_piece, color)
     @grid.each do |row|
       row.each do |square|
-        next unless square.instance_of?(piece) && square.piece.color == @current_player.color
-
-        square.location
+        piece = square.piece
+        if piece != nil &&
+           piece.instance_of?(type_of_piece) &&
+           piece.color == color
+          @location = square.location
+        else
+          next
+        end
       end
     end
+    @location
   end
 
   def up_left_clear?(start, finish)

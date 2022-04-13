@@ -6,7 +6,11 @@ require_relative './lib/prompts'
 
 include Display
 
-welcome_prompt
 
 game = Game.new
+
+
+welcome_prompt
+
 game.play_game
+check_mate_prompt

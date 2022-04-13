@@ -16,6 +16,7 @@ class Game
     @human = nil
     @computer = nil
     @current_player = nil
+    @check = false
   end
 
   def establish_player
@@ -39,6 +40,14 @@ class Game
       @computer = Computer.new('black')
     else
       @computer = Computer.new('white')
+    end
+  end
+
+  def establish_current_player
+    if @human.color == 'white'
+      @current_player = @human
+    else
+      @current_player = @computer
     end
   end
 
@@ -72,6 +81,8 @@ class Game
     "#{row}#{column}"
   end
 
+  
+
   def in_check?(ending_location)
     results = []
     list = create_list
@@ -97,25 +108,43 @@ class Game
     retrieve_class(location) == King
   end
 
-  # I think this is ready
   def king_is_in_check?
-    location = retrieve_location(King)
+    if @current_player == @human
+      color = @human.color
+    else
+      color = @computer.color
+    end
+    location = @board.retrieve_location(King, color)
     chess_notation_location = revert_location(location)
-    in_check?(chess_notation_location)
+    @check = in_check?(chess_notation_location)
   end
 
   def check_mate?
-    location = retrieve_location(King)
+    if @current_player == @human
+      color = @human.color
+    else
+      color = @computer.color
+    end
+    location = @board.retrieve_location(King, color)
     row, column = location
-    in_check?(revert_location([row, column])) &&
-      in_check?(revert_location([row + 1, column])) &&
-      in_check?(revert_location([row - 1, column])) &&
-      in_check?(revert_location([row, column + 1])) &&
-      in_check?(revert_location([row, column + 1])) &&
-      in_check?(revert_location([row + 1, column + 1])) &&
-      in_check?(revert_location([row - 1, column - 1])) &&
-      in_check?(revert_location([row + 1, column - 1])) &&
-      in_check?(revert_location([row - 1, column + 1]))
+    results = []
+    possible_moves = [
+      [row, column],
+      [row + 1, column],
+      [row, column + 1],
+      [row - 1, column],
+      [row, column - 1],
+      [row + 1, column + 1],
+      [row - 1, column - 1],
+      [row + 1, column - 1],
+      [row - 1, column + 1]
+    ]
+    possible_moves.each do |loc|
+      if @board.on_the_board?(loc)
+        results << in_check?(revert_location(loc))
+      end
+    end
+    !results.include?(false)
   end
 
   # I think this is ready too
@@ -124,7 +153,7 @@ class Game
   end
 
   def computer_turn
-    if king_is_in_check?
+    if @check == true
       @starting_choice = revert_location(@board.retrieve_location(King))
     else
       @starting_choice = random_square
@@ -159,7 +188,7 @@ class Game
   end
 
   def human_turn
-    if king_is_in_check?
+    if @check == true
       king_is_in_check_prompt
       @starting_choice = revert_location(@board.retrieve_location(King))
     else
@@ -221,12 +250,8 @@ class Game
     end
   end
 
-  def establish_current_player
-    if @human.color == 'white'
-      @current_player = @human
-    else
-      @current_player = @computer
-    end
+  def empty_square?(location)
+    @board.empty_square?([location])
   end
 
   def switch_current_player
@@ -247,6 +272,12 @@ class Game
     else
       computer_turn
     end
+    move_pieces
+    @board.display
+    if @current_player == @computer
+      display_computer_turn
+    end
+    switch_current_player
   end
 
   def play_game
@@ -255,18 +286,10 @@ class Game
     establish_computer
     establish_current_player
     @board.display
-    30.times do
+    one_turn
+    until check_mate?
+      king_is_in_check?
       one_turn
-      move_pieces
-      @board.display
-      if @current_player == @computer
-        display_computer_turn
-      end
-      switch_current_player
     end
-  end
-
-  def empty_square?(location)
-    @board.empty_square?([location])
   end
 end

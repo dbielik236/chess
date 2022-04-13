@@ -61,5 +61,8 @@ module Display
   def space_will_put_king_in_check_prompt
     puts "That will put your king in check. Pick a new piece to move."
   end
-  
+
+  def check_mate_prompt
+    puts "Checkmate! #{@current_player.name} won!"
+  end
 end
