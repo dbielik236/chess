@@ -41,6 +41,7 @@ class Queen
       possible_moves << [start_row, start_column]
     end
     # forward
+    start_row, start_column = start
     7.times do
       start_row += 1
       possible_moves << [start_row, start_column]
