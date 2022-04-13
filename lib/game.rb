@@ -264,11 +264,14 @@ class Game
         human_turn
       end
       # I think I need to temporarily move the pieces here
+      move_pieces
       if king_is_in_check?
         until king_is_in_check? == false
           # move the pieces back
+          move_pieces_back
           move_will_put_king_in_check_prompt
           human_turn
+          move_pieces
         end
       end
     else
@@ -279,12 +282,16 @@ class Game
       else
         computer_turn
       end
+      move_pieces
       if king_is_in_check?
         until king_is_in_check? == false
+          move_pieces_back
           computer_turn
+          move_pieces
         end
       end
     end
+    move_pieces_back
   end
 
   def first_turn

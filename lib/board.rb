@@ -140,7 +140,6 @@ class Board
       row.each do |square|
         if square.location == location
           @starting_square = square
-      
         else
           next
         end
@@ -424,8 +423,18 @@ class Board
     ending_location = convert_location(finish)
     retrieve_start(starting_location)
     retrieve_end(ending_location)
-    @ending_square.piece = @starting_square.piece
     @starting_square.piece.move_count += 1
+    @ending_square.piece = @starting_square.piece
     @starting_square.piece = nil
+  end
+
+  def move_piece_back(start, finish)
+    starting_location = convert_location(start)
+    ending_location = convert_location(finish)
+    retrieve_start(starting_location)
+    retrieve_end(ending_location)
+    @ending_square.piece.move_count -= 1
+    @starting_square.piece = @ending_square.piece
+    @ending_square.piece = nil
   end
 end
