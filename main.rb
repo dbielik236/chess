@@ -11,6 +11,9 @@ game = Game.new
 
 
 welcome_prompt
-puts game.board.retrieve_location(Rook, 'black')
-# game.play_game
-# check_mate_prompt
+#game.establish_player
+#game.establish_computer
+#game.establish_current_player
+#p game.king_is_in_check?
+game.play_game
+check_mate_prompt

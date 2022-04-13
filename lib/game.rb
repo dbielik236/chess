@@ -82,10 +82,15 @@ class Game
   end
 
   def in_check?(ending_location)
+    if @current_player == @human && @human.color == 'white'
+      color = 'black'
+    elsif @current_player == @computer && @computer.color == 'white'
+      color = 'black'
+    end
     results = []
     list = create_list
     list.each do |starting_location|
-      if @board.legal_start?(starting_location, @current_player.color) &&
+      if @board.legal_start?(starting_location, color) &&
          @board.legal_move_for_piece?(starting_location, ending_location) &&
          if @board.retrieve_class(starting_location) == Bishop
            @board.diagonal_clear?(starting_location, ending_location)
@@ -263,7 +268,7 @@ class Game
       else
         human_turn
       end
-      # I think I need to temporarily move the pieces here
+      # temporarily move the pieces to check 
       move_pieces
       if king_is_in_check?
         until king_is_in_check? == false
@@ -291,7 +296,6 @@ class Game
         end
       end
     end
-    move_pieces_back
   end
 
   def first_turn
@@ -318,11 +322,11 @@ class Game
     first_turn
     until check_mate?
       one_turn
-      move_pieces
       @board.display
       if @current_player == @computer
         display_computer_turn
       end
+      puts "King is NOT in check" unless king_is_in_check?
       switch_current_player
     end
   end
