@@ -81,7 +81,7 @@ class Game
     "#{row}#{column}"
   end
 
-  
+
 
   def in_check?(ending_location)
     results = []
@@ -289,6 +289,11 @@ class Game
     one_turn
     until check_mate?
       king_is_in_check?
+      if king_is_in_check?
+        king_is_in_check_prompt
+      else
+        puts "King is not check.."
+      end
       one_turn
     end
   end

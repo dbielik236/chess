@@ -125,7 +125,7 @@ class Board
     retrieve_end(ending_location)
     @ending_piece.nil? || @ending_piece.color != color
   end
-  
+
   def legal_move_for_piece?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
@@ -230,11 +230,8 @@ class Board
     column += 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      if retrieve_piece([row, column]).nil?
-        results << true
-      else
-        results << false
-      end
+      retrieve_piece([row, column])
+      results << @current_piece.nil?
       row += 1
       column += 1
       i += 1
@@ -251,11 +248,8 @@ class Board
     column -= 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      if retrieve_piece([row, column]).nil?
-        results << true
-      else
-        results << false
-      end
+      retrieve_piece([row, column])
+      results << @current_piece.nil?
       row -= 1
       column -= 1
       i += 1
@@ -272,11 +266,8 @@ class Board
     column += 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      if retrieve_piece([row, column]).nil?
-        results << true
-      else
-        results << false
-      end
+      retrieve_piece([row, column])
+      results << @current_piece.nil?
       row -= 1
       column += 1
       i += 1
@@ -308,11 +299,8 @@ class Board
     row += 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      if retrieve_piece([row, column]).nil?
-        results << true
-      else
-        results << false
-      end
+      retrieve_piece([row, column])
+      results << @current_piece.nil?
       row += 1
       i += 1
     end
@@ -327,11 +315,8 @@ class Board
     row -= 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      if retrieve_piece([row, column]).nil?
-        results << true
-      else
-        results << false
-      end
+      retrieve_piece([row, column])
+      results << @current_piece.nil?
       row -= 1
       i += 1
     end
@@ -346,11 +331,8 @@ class Board
     column -= 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      if retrieve_piece([row, column]).nil?
-        results << true
-      else
-        results << false
-      end
+      retrieve_piece([row, column])
+      results << @current_piece.nil?
       column -= 1
       i += 1
     end
@@ -365,11 +347,8 @@ class Board
     column += 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      if retrieve_piece([row, column]).nil?
-        results << true
-      else
-        results << false
-      end
+      retrieve_piece([row, column])
+      results << @current_piece.nil?
       column += 1
       i += 1
     end
