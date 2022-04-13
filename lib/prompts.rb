@@ -55,10 +55,10 @@ module Display
   end
 
   def king_is_in_check_prompt
-    puts "Your king is in check. You must move it."
+    puts "Your king is in check. Your move must get the king out of check."
   end
 
-  def space_will_put_king_in_check_prompt
+  def move_will_put_king_in_check_prompt
     puts "That will put your king in check. Pick a new piece to move."
   end
 

@@ -81,14 +81,12 @@ class Game
     "#{row}#{column}"
   end
 
-
-
   def in_check?(ending_location)
     results = []
     list = create_list
     list.each do |starting_location|
       if @board.legal_start?(starting_location, @current_player.color) &&
-         @board.legal_finish?(ending_location, @current_player.color) &&
+         @board.legal_move_for_piece?(starting_location, ending_location) &&
          if @board.retrieve_class(starting_location) == Bishop
            @board.diagonal_clear?(starting_location, ending_location)
          elsif @board.retrieve_class(starting_location) == Rook
@@ -101,7 +99,7 @@ class Game
         results << false
       end
     end
-    !results.include?(false)
+    results.include?(true)
   end
 
   def piece_is_a_king?(location)
@@ -116,7 +114,7 @@ class Game
     end
     location = @board.retrieve_location(King, color)
     chess_notation_location = revert_location(location)
-    @check = in_check?(chess_notation_location)
+    in_check?(chess_notation_location)
   end
 
   def check_mate?
@@ -142,26 +140,22 @@ class Game
     possible_moves.each do |loc|
       if @board.on_the_board?(loc)
         in_check?(revert_location(loc))
-        results << @check
+        results << in_check?(revert_location(loc))
       end
     end
     !results.include?(false)
   end
 
   # I think this is ready too
-  def space_will_put_king_in_check?(location)
+  def will_put_king_in_check?(location)
     in_check?(location)
   end
 
   def computer_turn
-    if @check == true
-      @starting_choice = revert_location(@board.retrieve_location(King))
-    else
+    @starting_choice = random_square
+    # checks to makes sure that the player has a piece there
+    until @board.legal_start?(@starting_choice, @current_player.color)
       @starting_choice = random_square
-      # checks to makes sure that the player has a piece there
-      until @board.legal_start?(@starting_choice, @current_player.color)
-        @starting_choice = random_square
-      end
     end
     @ending_choice = random_square
     unless @board.legal_finish?(@ending_choice, @current_player.color) && @board.legal_move_for_piece?(@starting_choice, @ending_choice)
@@ -183,28 +177,20 @@ class Game
         computer_turn
       end
     end
-    if space_will_put_king_in_check?(@ending_choice)
-      computer_turn
-    end
   end
 
   def human_turn
-    if @check == true
-      king_is_in_check_prompt
-      @starting_choice = revert_location(@board.retrieve_location(King))
-    else
-      starting_piece_prompt
+    starting_piece_prompt
+    @starting_choice = gets.chomp.strip
+    # checks to see if the player has used the correct format
+    until @board.correct_format?(@starting_choice)
+      incorrect_format_prompt
       @starting_choice = gets.chomp.strip
-      # checks to see if the player has used the correct format
-      until @board.correct_format?(@starting_choice)
-        incorrect_format_prompt
-        @starting_choice = gets.chomp.strip
-      end
-      # checks to makes sure that the player has a piece there
-      until @board.legal_start?(@starting_choice, @current_player.color)
-        illegal_starting_location_prompt
-        @starting_choice = gets.chomp.strip
-      end
+    end
+    # checks to makes sure that the player has a piece there
+    until @board.legal_start?(@starting_choice, @current_player.color)
+      illegal_starting_location_prompt
+      @starting_choice = gets.chomp.strip
     end
     ending_square_prompt
     # checks to see if the player used the right format
@@ -245,10 +231,6 @@ class Game
     if @ending_choice == 'p'
       human_turn
     end
-    if space_will_put_king_in_check?(@ending_choice)
-      space_will_put_king_in_check_prompt
-      human_turn
-    end
   end
 
   def empty_square?(location)
@@ -267,34 +249,74 @@ class Game
     @board.move_piece(@starting_choice, @ending_choice)
   end
 
+  def move_pieces_back
+    @board.move_piece_back(@starting_choice, @ending_choice)
+  end
+
   def one_turn
+    if @current_player == @human
+      if king_is_in_check?
+        until king_is_in_check? == false
+          king_is_in_check_prompt
+          human_turn
+        end
+      else
+        human_turn
+      end
+      # I think I need to temporarily move the pieces here
+      if king_is_in_check?
+        until king_is_in_check? == false
+          # move the pieces back
+          move_will_put_king_in_check_prompt
+          human_turn
+        end
+      end
+    else
+      if king_is_in_check?
+        until king_is_in_check? == false
+          computer_turn
+        end
+      else
+        computer_turn
+      end
+      if king_is_in_check?
+        until king_is_in_check? == false
+          computer_turn
+        end
+      end
+    end
+  end
+
+  def first_turn
     if @current_player == @human
       human_turn
     else
       computer_turn
     end
-    move_pieces
-    @board.display
     if @current_player == @computer
       display_computer_turn
     end
+    move_pieces
+    @board.display
     switch_current_player
   end
+
 
   def play_game
     @board.display
     establish_player
     establish_computer
     establish_current_player
-    @board.display
-    one_turn
+    # first turn to start the game
+    first_turn
     until check_mate?
-      if @check == true
-        king_is_in_check_prompt
-      else
-        puts "King is not check.."
-      end
       one_turn
+      move_pieces
+      @board.display
+      if @current_player == @computer
+        display_computer_turn
+      end
+      switch_current_player
     end
   end
 end

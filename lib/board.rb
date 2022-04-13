@@ -112,7 +112,7 @@ class Board
 
   def legal_start?(start, color)
     starting_location = convert_location(start)
-    retrieve_start(starting_location)
+    retrieve_start_piece(starting_location)
     if @starting_piece == nil || @starting_piece.color != color
       false
     elsif @starting_piece.color == color
@@ -122,13 +122,15 @@ class Board
 
   def legal_finish?(finish, color)
     ending_location = convert_location(finish)
-    retrieve_end(ending_location)
+    retrieve_end_piece(ending_location)
     @ending_piece.nil? || @ending_piece.color != color
   end
 
   def legal_move_for_piece?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
+    retrieve_start_piece(starting_location)
+    retrieve_end_piece(ending_location)
     @starting_piece.legal_move?(starting_location, ending_location, @starting_piece, @ending_piece)
   end
 
@@ -138,6 +140,18 @@ class Board
       row.each do |square|
         if square.location == location
           @starting_square = square
+      
+        else
+          next
+        end
+      end
+    end
+  end
+
+  def retrieve_start_piece(location)
+    @grid.each do |row|
+      row.each do |square|
+        if square.location == location
           @starting_piece = square.piece
         else
           next
@@ -152,7 +166,7 @@ class Board
       row.each do |square|
         if square.location == location
           @ending_square = square
-          @ending_piece = square.piece
+          
         else
           next
         end
@@ -160,6 +174,17 @@ class Board
     end
   end
 
+  def retrieve_end_piece(location)
+    @grid.each do |row|
+      row.each do |square|
+        if square.location == location
+          @ending_piece = square.piece
+        else
+          next
+        end
+      end
+    end
+  end
   # used by board class
   def retrieve_class(location)
     actual_loc = convert_location(location)
@@ -175,7 +200,6 @@ class Board
     @starting_piece.class
   end
 
-  # this seems redundant
   def retrieve_piece(location)
     @grid.each do |row|
       row.each do |square|
