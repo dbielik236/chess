@@ -14,6 +14,6 @@ welcome_prompt
 #game.establish_player
 #game.establish_computer
 #game.establish_current_player
-#p game.king_is_in_check?
+#p game.in_check?('a3')
 game.play_game
 check_mate_prompt

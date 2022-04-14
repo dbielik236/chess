@@ -2,6 +2,7 @@
 
 require_relative 'game'
 require_relative 'board'
+require_relative 'human'
 
 # holds all the display prompts
 module Display
@@ -63,6 +64,6 @@ module Display
   end
 
   def check_mate_prompt
-    puts "Checkmate! #{@current_player.name} won!"
+    puts "Checkmate!"
   end
 end

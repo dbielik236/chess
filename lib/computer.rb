@@ -6,5 +6,6 @@ class Computer
 
   def initialize(color)
     @color = color
+    @name = 'The computer'
   end
 end

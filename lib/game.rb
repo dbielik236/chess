@@ -17,6 +17,7 @@ class Game
     @computer = nil
     @current_player = nil
     @check = false
+    @num = 0
   end
 
   def establish_player
@@ -65,9 +66,9 @@ class Game
     columns = ['1', '2', '3', '4', '5', '6', '7', '8']
     every_location = []
     num = 0
-    8.times do
+    until num == 8
       columns.each do |column|
-        every_location << rows[num] + column
+        every_location << "#{rows[num]}#{column}"
       end
       num += 1
     end
@@ -84,31 +85,53 @@ class Game
   def in_check?(ending_location)
     if @current_player == @human && @human.color == 'white'
       color = 'black'
+    elsif current_player == @human && @human.color == 'black'
+      color = 'white'
     elsif @current_player == @computer && @computer.color == 'white'
       color = 'black'
+    elsif @current_player == @computer && @computer.color == 'black'
+      color = 'white'
     end
     results = []
     list = create_list
     list.each do |starting_location|
       if @board.legal_start?(starting_location, color) &&
-         @board.legal_move_for_piece?(starting_location, ending_location) &&
-         if @board.retrieve_class(starting_location) == Bishop
-           @board.diagonal_clear?(starting_location, ending_location)
-         elsif @board.retrieve_class(starting_location) == Rook
-           @board.vertical_horizontal_clear?(starting_location, ending_location)
-         elsif @board.retrieve_class(starting_location) == Queen
-           @board.all_clear?(starting_location, ending_location)
-         end
-        results << true
-      else
-        results << false
+         @board.legal_move_for_piece?(starting_location, ending_location)
+        results << starting_location
       end
     end
-    results.include?(true)
+    bishops_rooks_queens = []
+    results.each do |location|
+      if @board.retrieve_class(location) == Pawn
+        if @board.pawn_can_take_king?(location, ending_location, color) == false
+          bishops_rooks_queens << location
+        end
+      elsif @board.retrieve_class(location) == Bishop
+        if @board.diagonal_clear?(location, ending_location) == false
+          bishops_rooks_queens << location
+        end
+      elsif @board.retrieve_class(location) == Rook
+        if @board.vertical_horizontal_clear?(location, ending_location) == false
+          bishops_rooks_queens << location
+        end
+      elsif @board.retrieve_class(location) == Queen
+        if @board.all_clear?(location, ending_location) == false
+          bishops_rooks_queens << location
+        end
+      end
+    end
+    bishops_rooks_queens.each do |element|
+      results.delete(element)
+    end
+    p results
+    p @num += 1
+    p !results[0].nil?
+    !results[0].nil?
   end
 
+  # is this being used?
   def piece_is_a_king?(location)
-    retrieve_class(location) == King
+    @board.retrieve_class(location) == King
   end
 
   def king_is_in_check?
@@ -268,7 +291,7 @@ class Game
       else
         human_turn
       end
-      # temporarily move the pieces to check 
+      # temporarily move the pieces to check
       move_pieces
       if king_is_in_check?
         until king_is_in_check? == false
@@ -312,7 +335,6 @@ class Game
     switch_current_player
   end
 
-
   def play_game
     @board.display
     establish_player
@@ -326,7 +348,6 @@ class Game
       if @current_player == @computer
         display_computer_turn
       end
-      puts "King is NOT in check" unless king_is_in_check?
       switch_current_player
     end
   end
