@@ -443,6 +443,11 @@ class Board
     retrieve_start(starting_location)
     retrieve_end(ending_location)
     @starting_square.piece.move_count += 1
+    if @ending_square.piece == nil
+      @reserve = nil
+    else
+      @reserve = @ending_square.piece
+    end
     @ending_square.piece = @starting_square.piece
     @starting_square.piece = nil
   end
@@ -454,6 +459,6 @@ class Board
     retrieve_end(ending_location)
     @ending_square.piece.move_count -= 1
     @starting_square.piece = @ending_square.piece
-    @ending_square.piece = nil
+    @ending_square.piece = @reserve
   end
 end
