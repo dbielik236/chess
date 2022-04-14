@@ -76,10 +76,10 @@ class Game
   end
 
   def revert_location(location)
-    row_conversion = Hash[1 => 'a', 2 => 'b', 3 => 'c', 4 => 'd', 5 => 'e', 6 => 'f', 7 => 'g', 8 => 'h']
+    column_conversion = Hash[1 => 'a', 2 => 'b', 3 => 'c', 4 => 'd', 5 => 'e', 6 => 'f', 7 => 'g', 8 => 'h']
     row, column = location
-    row = row_conversion[row]
-    "#{row}#{column}"
+    column = column_conversion[column]
+    "#{column}#{row}"
   end
 
   def in_check?(ending_location)
@@ -123,9 +123,7 @@ class Game
     bishops_rooks_queens.each do |element|
       results.delete(element)
     end
-    p results
-    p @num += 1
-    p !results[0].nil?
+    
     !results[0].nil?
   end
 
@@ -142,6 +140,7 @@ class Game
     end
     location = @board.retrieve_location(King, color)
     chess_notation_location = revert_location(location)
+    
     in_check?(chess_notation_location)
   end
 
@@ -155,7 +154,6 @@ class Game
     row, column = location
     results = []
     possible_moves = [
-      [row, column],
       [row + 1, column],
       [row, column + 1],
       [row - 1, column],
@@ -166,11 +164,11 @@ class Game
       [row - 1, column + 1]
     ]
     possible_moves.each do |loc|
-      if @board.on_the_board?(loc)
-        in_check?(revert_location(loc))
+      if @board.on_the_board?(loc) && @board.legal_finish?(revert_location(loc), color)
         results << in_check?(revert_location(loc))
       end
     end
+    results << king_is_in_check?
     !results.include?(false)
   end
 
