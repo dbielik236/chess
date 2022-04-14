@@ -282,17 +282,13 @@ class Game
   def one_turn
     if @current_player == @human
       if king_is_in_check?
-        until king_is_in_check? == false
-          king_is_in_check_prompt
-          human_turn
-        end
-      else
-        human_turn
+        king_is_in_check_prompt
       end
+      human_turn
       # temporarily move the pieces to check
       move_pieces
       if king_is_in_check?
-        until king_is_in_check? == false
+        until check_mate? || king_is_in_check? == false
           # move the pieces back
           move_pieces_back
           move_will_put_king_in_check_prompt
@@ -301,16 +297,10 @@ class Game
         end
       end
     else
-      if king_is_in_check?
-        until king_is_in_check? == false
-          computer_turn
-        end
-      else
-        computer_turn
-      end
+      computer_turn
       move_pieces
       if king_is_in_check?
-        until king_is_in_check? == false
+        until check_mate? || king_is_in_check? == false
           move_pieces_back
           computer_turn
           move_pieces

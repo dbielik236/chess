@@ -218,8 +218,7 @@ class Board
            piece.instance_of?(type_of_piece) &&
            piece.color == color
           @location = square.location
-          p "#{piece}"
-          p @location
+          
         else
           next
         end
