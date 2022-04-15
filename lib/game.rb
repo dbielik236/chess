@@ -92,16 +92,16 @@ class Game
     elsif @current_player == @computer && @computer.color == 'black'
       color = 'white'
     end
-    results = []
+    @results = []
     list = create_list
     list.each do |starting_location|
       if @board.legal_start?(starting_location, color) &&
          @board.legal_move_for_piece?(starting_location, ending_location)
-        results << starting_location
+        @results << starting_location
       end
     end
     bishops_rooks_queens = []
-    results.each do |location|
+    @results.each do |location|
       if @board.retrieve_class(location) == Pawn
         if @board.pawn_can_take_king?(location, ending_location, color) == false
           bishops_rooks_queens << location
@@ -121,10 +121,9 @@ class Game
       end
     end
     bishops_rooks_queens.each do |element|
-      results.delete(element)
+      @results.delete(element)
     end
-    
-    !results[0].nil?
+    !@results[0].nil?
   end
 
   # is this being used?
@@ -143,7 +142,7 @@ class Game
     in_check?(chess_notation_location)
   end
 
-  def check_mate?
+  def king_has_no_moves?
     if @current_player == @human
       color = @human.color
     else
@@ -152,7 +151,6 @@ class Game
     location = @board.retrieve_location(King, color)
     row, column = location
     results = []
-    
     possible_moves = [
       [row + 1, column],
       [row, column + 1],
@@ -172,7 +170,87 @@ class Game
     !results.include?(false) && results[0] != nil
   end
 
-  # I think this is ready too
+  # I think this works??
+  def pieces_cannot_be_taken_out?
+    pieces = []
+    list = create_list
+    list.each do |starting_location|
+      @results.each do |ending_location|
+        if @board.legal_start?(starting_location, @current_player.color) &&
+           @board.legal_move_for_piece?(starting_location, ending_location)
+          pieces << starting_location
+        end
+      end
+    end
+    bishops_rooks_queens = []
+    pieces.each do |location|
+      if @board.retrieve_class(location) == Pawn
+        if @board.pawn_can_take_king?(location, ending_location, color) == false
+          bishops_rooks_queens << location
+        end
+      elsif @board.retrieve_class(location) == Bishop
+        if @board.diagonal_clear?(location, ending_location) == false
+          bishops_rooks_queens << location
+        end
+      elsif @board.retrieve_class(location) == Rook
+        if @board.vertical_horizontal_clear?(location, ending_location) == false
+          bishops_rooks_queens << location
+        end
+      elsif @board.retrieve_class(location) == Queen
+        if @board.all_clear?(location, ending_location) == false
+          bishops_rooks_queens << location
+        end
+      end
+    end
+    bishops_rooks_queens.each do |element|
+      pieces.delete(element)
+    end
+    !pieces[0].nil?
+  end
+
+  # This is a work in progress
+  def piece_cannot_be_moved_into_the_path?
+    possible_moves = []
+    list = create_list
+    king_location = @board.retrieve_location(King, color)
+    king_row, king_column = king_location
+    @results.each do |location|
+      if @board.retrieve_class(location) == Bishop
+        bishop_location = @board.convert_location(location)
+        bishop_row, bishop_column = bishop_location
+        if king_row > bishop_row && king_column > bishop_column 
+          until king_location == [bishop_row, bishop_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([bishop_row, bishop_column])) &&
+                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            bishop_row += 1
+            bishop_column += 1
+          end
+        end
+        # row greater column less
+        # row less column greater
+        # row less column less
+        #
+      end
+    end
+
+
+
+
+
+
+
+  end
+
+  def check_mate?
+    king_has_no_moves? && pieces_cannot_be_taken_out? && piece_cannot_be_moved_into_the_path?
+  end
+
+  # is this being used anywhere?
   def will_put_king_in_check?(location)
     in_check?(location)
   end
