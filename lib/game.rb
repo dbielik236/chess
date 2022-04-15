@@ -287,24 +287,20 @@ class Game
       human_turn
       # temporarily move the pieces to check
       move_pieces
-      if king_is_in_check?
-        until king_is_in_check? == false || check_mate?
-          # move the pieces back
-          move_pieces_back
-          move_will_put_king_in_check_prompt
-          human_turn
-          move_pieces
-        end
+      until king_is_in_check? == false || check_mate?
+        # move the pieces back
+        move_pieces_back
+        move_will_put_king_in_check_prompt
+        human_turn
+        move_pieces
       end
     else
       computer_turn
       move_pieces
-      if king_is_in_check?
-        until king_is_in_check? == false || check_mate?
-          move_pieces_back
-          computer_turn
-          move_pieces
-        end
+      until king_is_in_check? == false || check_mate?
+        move_pieces_back
+        computer_turn
+        move_pieces
       end
     end
   end
