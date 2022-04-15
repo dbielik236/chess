@@ -140,7 +140,6 @@ class Game
     end
     location = @board.retrieve_location(King, color)
     chess_notation_location = revert_location(location)
-    
     in_check?(chess_notation_location)
   end
 
@@ -153,6 +152,7 @@ class Game
     location = @board.retrieve_location(King, color)
     row, column = location
     results = []
+    
     possible_moves = [
       [row + 1, column],
       [row, column + 1],
@@ -168,8 +168,8 @@ class Game
         results << in_check?(revert_location(loc))
       end
     end
-    results << king_is_in_check?
-    !results.include?(false)
+    results << in_check?(revert_location(location))
+    !results.include?(false) && results[0] != nil
   end
 
   # I think this is ready too
@@ -288,7 +288,7 @@ class Game
       # temporarily move the pieces to check
       move_pieces
       if king_is_in_check?
-        until check_mate? || king_is_in_check? == false
+        until king_is_in_check? == false || check_mate?
           # move the pieces back
           move_pieces_back
           move_will_put_king_in_check_prompt
@@ -300,7 +300,7 @@ class Game
       computer_turn
       move_pieces
       if king_is_in_check?
-        until check_mate? || king_is_in_check? == false
+        until king_is_in_check? == false || check_mate?
           move_pieces_back
           computer_turn
           move_pieces
@@ -332,6 +332,16 @@ class Game
     first_turn
     until check_mate?
       one_turn
+      if @current_player == @computer
+        display_computer_making_turn
+        sleep(0.25)
+        print "."
+        sleep(0.25)
+        print "."
+        sleep(0.25)
+        print ".\n"
+        sleep(0.25)
+      end
       @board.display
       if @current_player == @computer
         display_computer_turn

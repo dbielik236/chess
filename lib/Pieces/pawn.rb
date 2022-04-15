@@ -37,7 +37,7 @@ class Pawn
       possible_moves << [start_row - 1, start_column] if ending_piece.nil?
 
       # allows the pawn to move two on the opening move
-      possible_moves << [start_row - 2, start_column] if starting_piece.move_count.zero?
+      possible_moves << [start_row - 2, start_column] if starting_piece.move_count.zero? && ending_piece.nil?
 
       # allows the pawn to capture another one
       possible_moves << [start_row - 1, start_column + 1] unless ending_piece.nil?

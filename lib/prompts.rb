@@ -51,6 +51,10 @@ module Display
     puts 'That piece cannot go there. Please choose again. Or type p to choose another piece.'
   end
 
+  def display_computer_making_turn
+    print 'The computer is thinking'
+  end
+
   def display_computer_turn
     puts "The computer moved from #{@starting_choice} to #{@ending_choice}."
   end
