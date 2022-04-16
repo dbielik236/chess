@@ -170,7 +170,6 @@ class Game
     !results.include?(false) && results[0] != nil
   end
 
-  # I think this works??
   def pieces_cannot_be_taken_out?
     pieces = []
     list = create_list
@@ -321,6 +320,120 @@ class Game
     possible_moves[0].nil?
   end
 
+  def piece_cannot_move_into_the_path_of_queens?
+    possible_moves = []
+    list = create_list
+    king_location = @board.retrieve_location(King, @current_player.color)
+    king_row, king_column = king_location
+    @results.each do |location|
+      if @board.retrieve_class(location) == Queen
+        queen_location = @board.convert_location(location)
+        queen_row, queen_column =queen_location
+        if king_row > queen_row
+          until king_location == [queen_row, queen_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            queen_row += 1
+          end
+        end
+        if king_row < queen_row
+          until king_location == [queen_row, queen_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            queen_row -= 1
+          end
+        end
+        if king_column > queen_column
+          until king_location == [queen_row, queen_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            queen_column += 1
+          end
+        end
+        if king_column < queen_column
+          until king_location == [queen_row, queen_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            queen_column -= 1
+          end
+        end
+        if king_row > queen_row && king_column > queen_column
+          until king_location == [queen_row, queen_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            queen_row += 1
+            queen_column += 1
+          end
+        end
+        if king_row > queen_row && king_column < queen_column
+          until king_location == [queen_row, queen_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            queen_row += 1
+            queen_column -= 1
+          end
+        end
+        if king_row < queen_row && king_column > queen_column
+          until king_location == [queen_row, bqueen_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            queen_row -= 1
+            queen_column += 1
+          end
+        end
+        if king_row < queen_row && king_column < queen_column
+          until king_location == [queen_row, queen_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            queen_row -= 1
+            queen_column -= 1
+          end
+        end
+      end
+    end
+    possible_moves[0].nil?
+  end
+
   def check_mate?
     king_has_no_moves? &&
       pieces_cannot_be_taken_out? &&
@@ -344,6 +457,11 @@ class Game
       computer_turn
     end
     # checks that the finish square is available
+    if @board.retrieve_class(@starting_choice) == Pawn
+      unless @board.pawn_path_clear?(@starting_choice, @current_player.color)
+        computer_turn
+      end
+    end
     if @board.retrieve_class(@starting_choice) == Bishop
       unless @board.diagonal_clear?(@starting_choice, @ending_choice)
         computer_turn
@@ -386,24 +504,33 @@ class Game
       illegal_ending_location_prompt
       @ending_choice = gets.chomp.strip
     end
-    # until correct legal move for piece...?
+    # checks that it is a legal move for the piece
     until @ending_choice == 'p' || @board.legal_move_for_piece?(@starting_choice, @ending_choice)
       illegal_move_for_piece_prompt
       @ending_choice = gets.chomp.strip
     end
-    # if piece is a bishop check diagonal lines for clear
+    # checks to see if the pawn path is clear
+    if @board.retrieve_class(@starting_choice) == Pawn
+      until @ending_choice == 'p' || @board.pawn_path_clear?(@starting_choice, @current_player.color)
+        path_not_clear_prompt
+        @ending_choice = gets.chomp.strip
+      end
+    end
+    # checks that the diagonal lines are clear if a piece is a bishop
     if @board.retrieve_class(@starting_choice) == Bishop
       until @ending_choice == 'p' || @board.diagonal_clear?(@starting_choice, @ending_choice)
         path_not_clear_prompt
         @ending_choice = gets.chomp.strip
       end
     end
+    # checks that the vertical/horizontal lines are clear if a piece is a rook
     if @board.retrieve_class(@starting_choice) == Rook
       until @ending_choice == 'p' || @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
         path_not_clear_prompt
         @ending_choice = gets.chomp.strip
       end
     end
+    # checks that the all lines are clear if a piece is a queen
     if @board.retrieve_class(@starting_choice) == Queen
       until @ending_choice == 'p' || @board.all_clear?(@starting_choice, @ending_choice)
         path_not_clear_prompt

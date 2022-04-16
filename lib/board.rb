@@ -422,6 +422,18 @@ class Board
     end
   end
 
+  def pawn_path_clear?(start, color)
+    starting_location = convert_location(start)
+    row, column = starting_location
+    if color == 'white'
+      retrieve_piece([row + 1, column])
+      @current_piece.nil?
+    elsif color == 'black'
+      retrieve_piece([row - 1, column])
+      @current_piece.nil?
+    end
+  end
+
   def pawn_can_take_king?(start, finish, color)
     result = false
     starting_location = convert_location(start)
