@@ -24,7 +24,7 @@ module Display
   end
 
   def starting_piece_prompt
-    puts "#{@human.name}, choose a piece to move (for example a1 or f7)."
+    puts "#{@human.name}, choose a piece to move (for example a1 or f7). Or type c to castle."
   end
 
   def illegal_starting_location_prompt
@@ -33,6 +33,10 @@ module Display
 
   def ending_square_prompt
     puts 'Choose a space to move the piece to (for example a1 or f7).'
+  end
+
+  def which_rook_to_castle_prompt
+    puts 'Enter the location of the rook you would like to castle with.'
   end
 
   def illegal_ending_location_prompt
@@ -69,5 +73,9 @@ module Display
 
   def check_mate_prompt
     puts "Checkmate!"
+  end
+
+  def cannot_castle_prompt
+    puts 'You can\'t castle with that rook.'
   end
 end

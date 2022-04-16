@@ -18,6 +18,7 @@ class Game
     @current_player = nil
     @check = false
     @num = 0
+    @castle = 0
   end
 
   def establish_player
@@ -480,8 +481,16 @@ class Game
   end
 
   def human_turn
+    @castle = 0
     starting_piece_prompt
     @starting_choice = gets.chomp
+    if @starting_choice == 'c'
+      which_rook_to_castle_prompt
+      rook = gets.chomp
+      castle(rook)
+    end
+    return if @castle == 1
+
     # checks to see if the player has used the correct format
     until @board.correct_format?(@starting_choice)
       incorrect_format_prompt
@@ -554,8 +563,47 @@ class Game
     end
   end
 
-  def move_pieces
-    @board.move_piece(@starting_choice, @ending_choice)
+  def castle(rook_location)
+    king_location = @board.retrieve_location(King, @current_player.color)
+    king = @board.retrieve_piece(king_location)
+    rook = @board.retrieve_piece(@board.convert_location(rook_location))
+    if king.move_count.zero? && rook.move_count.zero? && king_is_in_check? == false
+      if rook_location == 'a1'
+        if @board.retrieve_piece(@board.convert_location('b1')).nil? &&
+           @board.retrieve_piece(@board.convert_location('c1')).nil? &&
+           @board.retrieve_piece(@board.convert_location('d1')).nil? &&
+           in_check?('b1') == false &&
+           in_check?('c1') == false &&
+           in_check?('d1') == false
+          move_pieces('a1', 'd1')
+          move_pieces('e1', 'c1')
+          @castle = 1
+        else
+          
+          cannot_castle_prompt
+          return
+        end
+      end
+      if rook_location == 'h1'
+      # if b1, c1, and d1 are nil and not in check
+      # move the king to c1 and the rook to d1
+      end
+      if rook_location == 'a8'
+      # if b1, c1, and d1 are nil and not in check
+      # move the king to c1 and the rook to d1
+      end
+      if rook_location == 'h8'
+      # if b1, c1, and d1 are nil and not in check
+      # move the king to c1 and the rook to d1
+      end
+    else
+      cannot_castle_prompt
+      return
+    end
+  end
+
+  def move_pieces(start = @starting_choice, finish = @ending_choice)
+    @board.move_piece(start, finish)
   end
 
   def move_pieces_back
@@ -569,7 +617,9 @@ class Game
       end
       human_turn
       # temporarily move the pieces to check
-      move_pieces
+      unless @castle == 1
+        move_pieces
+      end
       until king_is_in_check? == false || check_mate?
         # move the pieces back
         move_pieces_back
@@ -597,7 +647,9 @@ class Game
     if @current_player == @computer
       display_computer_turn
     end
-    move_pieces
+    unless @castle == 1
+      move_pieces
+    end
     @board.display
     switch_current_player
   end

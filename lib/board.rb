@@ -210,6 +210,7 @@ class Board
         @current_piece = square.piece
       end
     end
+    @current_piece
   end
 
   # can this be combined with others?
