@@ -628,6 +628,77 @@ class Game
     end
   end
 
+  def last_row(color)
+    if color == 'white'
+      ['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']
+    elsif color == 'black'
+      ['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']
+    end
+  end
+
+  def promote_piece(letter)
+    if @current_player.color == 'white'
+      if letter == 'q'
+        choice = Queen
+        icon = " \u2655 "
+      elsif letter == 'b'
+        choice = Bishop
+        icon = " \u2657 "
+      elsif letter == 'k'
+        choice = Knight
+        icon = " \u2658 "
+      elsif letter == 'r'
+        choice = Rook
+        icon = " \u2656 "
+      end
+    elsif @current_player.color == 'black'
+      if letter == 'q'
+        choice = Queen
+        icon = " \u265B "
+      elsif letter == 'b'
+        choice = Bishop
+        icon = " \u265D "
+      elsif letter == 'k'
+        choice = Knight
+        icon = " \u265E "
+      elsif letter == 'r'
+        choice = Rook
+        icon = " \u265C "
+      end
+    end
+    row = last_row(@current_player.color)
+    row.each do |loc|
+      if @board.retrieve_piece(revert_location(loc)) == Pawn
+        square = @board.retrieve_start(loc)
+        square.piece = choice
+        square.icon = icon
+      end
+    end
+  end
+
+  def pawn_promotion_human
+    row = last_row(@current_player.color)
+    row.each do |loc|
+      if @board.retrieve_piece(revert_location(loc)) == Pawn
+        pawn_promote_prompt
+        piece = gets.chomp
+        until piece == 'q' || piece == 'b' || piece == 'k' || piece == 'r'
+          incorrect_piece_prompt
+          piece = gets.chomp
+        end
+        promote_piece(piece)
+        @board.display
+        display_piece_promoted
+      end
+    end
+  end
+
+  # needs to be written
+  def pawn_promotion_computer
+  end
+    
+
+
   def move_pieces(start = @starting_choice, finish = @ending_choice)
     @board.move_piece(start, finish)
   end
@@ -702,6 +773,11 @@ class Game
       @board.display
       if @current_player == @computer
         display_computer_turn
+      end
+      if @current_player == @human
+        pawn_promotion_human
+      elsif @current_player == @computer
+        pawn_promotion_computer
       end
       switch_current_player
     end

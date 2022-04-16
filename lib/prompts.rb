@@ -64,18 +64,30 @@ module Display
   end
 
   def king_is_in_check_prompt
-    puts "Your king is in check. Your move must get the king out of check."
+    puts 'Your king is in check. Your move must get the king out of check.'
   end
 
   def move_will_put_king_in_check_prompt
-    puts "That will put your king in check. Pick a new piece to move."
+    puts 'That will put your king in check. Pick a new piece to move.'
   end
 
   def check_mate_prompt
-    puts "Checkmate!"
+    puts 'Checkmate!'
   end
 
   def cannot_castle_prompt
     puts 'You can\'t castle with that rook.'
+  end
+
+  def pawn_promote_prompt
+    puts 'Your pawn is promoted! Type the first letter of the piece you would like it to become.'
+  end
+
+  def incorrect_piece_prompt
+    puts 'Type q for queen, b for bishop, k for knight, or r for rook'
+  end
+
+  def display_piece_promoted
+    puts 'Your pawn has been promoted!'
   end
 end
