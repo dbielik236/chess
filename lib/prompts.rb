@@ -44,7 +44,7 @@ module Display
   end
 
   def incorrect_format_prompt
-    puts 'The format is incorrect. Enter row-letter then column-number (for example, a1 or f7). '
+    puts 'Enter a location first with row-letter then column-number (for example, a1 or f7). '
   end
 
   def path_not_clear_prompt

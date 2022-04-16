@@ -579,26 +579,52 @@ class Game
           move_pieces('e1', 'c1')
           @castle = 1
         else
-          
           cannot_castle_prompt
           return
         end
       end
       if rook_location == 'h1'
-      # if b1, c1, and d1 are nil and not in check
-      # move the king to c1 and the rook to d1
+        if @board.retrieve_piece(@board.convert_location('g1')).nil? &&
+           @board.retrieve_piece(@board.convert_location('f1')).nil? &&
+           in_check?('g1') == false &&
+           in_check?('f1') == false
+          move_pieces('h1', 'f1')
+          move_pieces('e1', 'g1')
+          @castle = 1
+        else
+          cannot_castle_prompt
+          return
+        end
       end
       if rook_location == 'a8'
-      # if b1, c1, and d1 are nil and not in check
-      # move the king to c1 and the rook to d1
+        if @board.retrieve_piece(@board.convert_location('b8')).nil? &&
+           @board.retrieve_piece(@board.convert_location('c8')).nil? &&
+           @board.retrieve_piece(@board.convert_location('d8')).nil? &&
+           in_check?('b8') == false &&
+           in_check?('c8') == false &&
+           in_check?('d8') == false
+          move_pieces('a8', 'd8')
+          move_pieces('e8', 'c8')
+          @castle = 1
+        else
+          cannot_castle_prompt
+          return
+        end
       end
       if rook_location == 'h8'
-      # if b1, c1, and d1 are nil and not in check
-      # move the king to c1 and the rook to d1
+        if @board.retrieve_piece(@board.convert_location('g8')).nil? &&
+           @board.retrieve_piece(@board.convert_location('f8')).nil? &&
+           in_check?('g8') == false &&
+           in_check?('f8') == false
+          move_pieces('h8', 'f8')
+          move_pieces('e8', 'g8')
+          @castle = 1
+        else
+          cannot_castle_prompt
+        end
       end
     else
       cannot_castle_prompt
-      return
     end
   end
 
