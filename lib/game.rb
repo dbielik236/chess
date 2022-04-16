@@ -178,41 +178,25 @@ class Game
       @results.each do |ending_location|
         if @board.legal_start?(starting_location, @current_player.color) &&
            @board.legal_move_for_piece?(starting_location, ending_location)
-          pieces << starting_location
+          if @board.retrieve_class(ending_location) == Bishop && @board.diagonal_clear?(starting_location, ending_location) == false
+            pieces << starting_location
+          end
+          if @board.retrieve_class(ending_location) == Rook && @board.vertical_horizontal_clear?(starting_location, ending_location) == false
+            pieces << starting_location
+          end
+          if @board.retrieve_class(ending_location) == Queen && @board.all_clear?(starting_location, ending_location) == false
+            pieces << starting_location
+          end
         end
       end
     end
-    bishops_rooks_queens = []
-    pieces.each do |location|
-      if @board.retrieve_class(location) == Pawn
-        if @board.pawn_can_take_king?(location, ending_location, color) == false
-          bishops_rooks_queens << location
-        end
-      elsif @board.retrieve_class(location) == Bishop
-        if @board.diagonal_clear?(location, ending_location) == false
-          bishops_rooks_queens << location
-        end
-      elsif @board.retrieve_class(location) == Rook
-        if @board.vertical_horizontal_clear?(location, ending_location) == false
-          bishops_rooks_queens << location
-        end
-      elsif @board.retrieve_class(location) == Queen
-        if @board.all_clear?(location, ending_location) == false
-          bishops_rooks_queens << location
-        end
-      end
-    end
-    bishops_rooks_queens.each do |element|
-      pieces.delete(element)
-    end
-    !pieces[0].nil?
+    pieces[0].nil?
   end
 
-  # This is a work in progress
-  def piece_cannot_be_moved_into_the_path?
+  def piece_cannot_be_moved_into_the_path_of_bishops?
     possible_moves = []
     list = create_list
-    king_location = @board.retrieve_location(King, color)
+    king_location = @board.retrieve_location(King, @current_player.color)
     king_row, king_column = king_location
     @results.each do |location|
       if @board.retrieve_class(location) == Bishop
@@ -231,23 +215,117 @@ class Game
             bishop_column += 1
           end
         end
-        # row greater column less
-        # row less column greater
-        # row less column less
-        #
+        if king_row > bishop_row && king_column < bishop_column
+          until king_location == [bishop_row, bishop_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([bishop_row, bishop_column])) &&
+                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            bishop_row += 1
+            bishop_column -= 1
+          end
+        end
+        if king_row < bishop_row && king_column > bishop_column
+          until king_location == [bishop_row, bishop_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([bishop_row, bishop_column])) &&
+                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            bishop_row -= 1
+            bishop_column += 1
+          end
+        end
+        if king_row < bishop_row && king_column < bishop_column
+          until king_location == [bishop_row, bishop_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([bishop_row, bishop_column])) &&
+                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            bishop_row -= 1
+            bishop_column -= 1
+          end
+        end
       end
     end
+    possible_moves[0].nil?
+  end
 
-
-
-
-
-
-
+  def piece_cannot_be_moved_into_the_path_of_rooks?
+    possible_moves = []
+    list = create_list
+    king_location = @board.retrieve_location(King, @current_player.color)
+    king_row, king_column = king_location
+    @results.each do |location|
+      if @board.retrieve_class(location) == Rook
+        rook_location = @board.convert_location(location)
+        rook_row, rook_column = rook_location
+        if king_row > rook_row
+          until king_location == [rook_row, rook_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([rook_row, rook_column])) &&
+                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            rook_row += 1
+          end
+        end
+        if king_row < rook_row
+          until king_location == [rook_row, rook_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([rook_row, rook_column])) &&
+                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            rook_row -= 1
+          end
+        end
+        if king_column > rook_column
+          until king_location == [rook_row, rook_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([rook_row, rook_column])) &&
+                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            rook_column += 1
+          end
+        end
+        if king_column < rook_column
+          until king_location == [rook_row, rook_column]
+            list.each do |starting_location|
+              if @board.legal_start?(starting_location, @current_player.color) &&
+                 @board.legal_move_for_piece?(starting_location, revert_location([rook_row, rook_column])) &&
+                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color)
+                possible_moves << starting_location
+              end
+            end
+            rook_column -= 1
+          end
+        end
+      end
+    end
+    possible_moves[0].nil?
   end
 
   def check_mate?
-    king_has_no_moves? && pieces_cannot_be_taken_out? && piece_cannot_be_moved_into_the_path?
+    king_has_no_moves? &&
+      pieces_cannot_be_taken_out? &&
+      piece_cannot_be_moved_into_the_path_of_bishops? &&
+      piece_cannot_be_moved_into_the_path_of_rooks?
   end
 
   # is this being used anywhere?
@@ -285,7 +363,7 @@ class Game
 
   def human_turn
     starting_piece_prompt
-    @starting_choice = gets.chomp.strip
+    @starting_choice = gets.chomp
     # checks to see if the player has used the correct format
     until @board.correct_format?(@starting_choice)
       incorrect_format_prompt

@@ -101,8 +101,11 @@ class Board
   def correct_format?(location)
     row_possibilities = 'abcdefgh'
     column_possibilities = '12345678'
-
-    !location[0].nil? && !location[1].nil? && row_possibilities.include?(location[0]) && column_possibilities.include?(location[1])
+    !location[0].nil? &&
+      !location[1].nil? &&
+      row_possibilities.include?(location[0]) &&
+      column_possibilities.include?(location[1]) &&
+      location.length == 2
   end
 
   def on_the_board?(location)
