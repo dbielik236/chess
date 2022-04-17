@@ -8,7 +8,11 @@ require_relative 'human'
 module Display
 
   def welcome_prompt
-    puts 'Let\'s play chess!'
+    puts 'Let\'s play chess! To load a saved game type, l. To play a new game, type n.'
+  end
+
+  def new_or_load_error_prompt
+    puts 'Please type l to load a saved game or type n to play a new game.'
   end
 
   def player_name_prompt
@@ -24,7 +28,7 @@ module Display
   end
 
   def starting_piece_prompt
-    puts "#{@human.name}, choose a piece to move (for example a1 or f7). Or type c to castle."
+    puts "#{@human.name}, choose a piece to move (for example a1 or f7). (Type c to castle.)"
   end
 
   def illegal_starting_location_prompt
@@ -93,5 +97,25 @@ module Display
 
   def computer_king_is_in_check_display
     puts "The computer\'s king is in check."
+  end
+
+  def file_name_prompt
+    puts 'Please type a name to save the file under'
+  end
+
+  def saved_game_choices_prompt
+    puts 'Here are the saved games. Which one would you like to load?'
+  end
+
+  def save_the_game_prompt
+    puts 'Type s to save the game, otherwise hit enter to make a move.'
+  end
+
+  def game_has_been_saved_display
+    puts 'Game saved successfully. You may close out or keep playing.'
+  end
+
+  def not_a_valid_choice_prompt
+    puts 'You must choose one of the numbers listed.'
   end
 end

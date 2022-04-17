@@ -10,12 +10,14 @@ require_relative './pieces/knight'
 require_relative './pieces/bishop'
 require_relative './pieces/queen'
 require_relative './pieces/king'
+require_relative 'save_load_game'
 
 # controls the gameplay
 class Game
   attr_accessor :board, :human, :computer, :current_player
 
   include Display
+  include SaveLoad
 
   def initialize
     @board = Board.new
