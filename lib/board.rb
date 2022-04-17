@@ -169,7 +169,6 @@ class Board
       row.each do |square|
         if square.location == location
           @ending_square = square
-          
         else
           next
         end

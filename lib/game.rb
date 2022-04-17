@@ -226,7 +226,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([bishop_row, bishop_column])) &&
-                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color) &&
+                 @board.diagonal_clear?(starting_location, [bishop_row, bishop_column])
                 possible_moves << starting_location
               end
             end
@@ -239,7 +240,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([bishop_row, bishop_column])) &&
-                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color) &&
+                 @board.diagonal_clear?(starting_location, [bishop_row, bishop_column])
                 possible_moves << starting_location
               end
             end
@@ -252,7 +254,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([bishop_row, bishop_column])) &&
-                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color) &&
+                 @board.diagonal_clear?(starting_location, [bishop_row, bishop_column])
                 possible_moves << starting_location
               end
             end
@@ -279,7 +282,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([rook_row, rook_column])) &&
-                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color) &&
+                 @board.vertical_horizontal_clear?(starting_location, [rook_row, rook_column])
                 possible_moves << starting_location
               end
             end
@@ -291,7 +295,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([rook_row, rook_column])) &&
-                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color) &&
+                 @board.vertical_horizontal_clear?(starting_location, [rook_row, rook_column])
                 possible_moves << starting_location
               end
             end
@@ -303,7 +308,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([rook_row, rook_column])) &&
-                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color) &&
+                 @board.vertical_horizontal_clear?(starting_location, [rook_row, rook_column])
                 possible_moves << starting_location
               end
             end
@@ -315,7 +321,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([rook_row, rook_column])) &&
-                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([rook_row, rook_column]), @current_player.color) &&
+                 @board.vertical_horizontal_clear?(starting_location, [rook_row, rook_column])
                 possible_moves << starting_location
               end
             end
@@ -341,7 +348,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
-                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color) &&
+                 @board.all_clear?(starting_location, [queen_row, queen_column])
                 possible_moves << starting_location
               end
             end
@@ -353,7 +361,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
-                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color) &&
+                 @board.all_clear?(starting_location, [queen_row, queen_column])
                 possible_moves << starting_location
               end
             end
@@ -365,7 +374,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
-                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color) &&
+                 @board.all_clear?(starting_location, [queen_row, queen_column])
                 possible_moves << starting_location
               end
             end
@@ -377,7 +387,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
-                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color) &&
+                 @board.all_clear?(starting_location, [queen_row, queen_column])
                 possible_moves << starting_location
               end
             end
@@ -389,7 +400,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
-                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color) &&
+                 @board.all_clear?(starting_location, [queen_row, queen_column])
                 possible_moves << starting_location
               end
             end
@@ -402,7 +414,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
-                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color) &&
+                 @board.all_clear?(starting_location, [queen_row, queen_column])
                 possible_moves << starting_location
               end
             end
@@ -415,7 +428,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
-                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color) &&
+                 @board.all_clear?(starting_location, [queen_row, queen_column])
                 possible_moves << starting_location
               end
             end
@@ -428,7 +442,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([queen_row, queen_column])) &&
-                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([queen_row, queen_column]), @current_player.color) &&
+                 @board.all_clear?(starting_location, [queen_row, queen_column])
                 possible_moves << starting_location
               end
             end
@@ -557,6 +572,7 @@ class Game
     end
   end
 
+  # is this being used anywhere?
   def empty_square?(location)
     @board.empty_square?([location])
   end
@@ -691,10 +707,6 @@ class Game
     end
   end
 
-  # needs to be written
-  def pawn_promotion_computer
-  end
-
   def move_pieces(start = @starting_choice, finish = @ending_choice)
     @board.move_piece(start, finish)
   end
@@ -721,9 +733,11 @@ class Game
         move_pieces
       end
     else
+      if king_is_in_check?
+        computer_king_is_in_check_display
+      end
       computer_turn
       move_pieces
-      promote_piece('q')
       until king_is_in_check? == false || check_mate?
         move_pieces_back
         computer_turn
@@ -774,7 +788,7 @@ class Game
       if @current_player == @human
         pawn_promotion_human
       elsif @current_player == @computer
-        pawn_promotion_computer
+        promote_piece('q')
       end
       switch_current_player
     end

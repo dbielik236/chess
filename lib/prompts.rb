@@ -90,4 +90,8 @@ module Display
   def display_piece_promoted
     puts 'Your pawn has been promoted!'
   end
+
+  def computer_king_is_in_check_display
+    puts "The computer\'s king is in check."
+  end
 end
