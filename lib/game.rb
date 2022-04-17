@@ -519,7 +519,7 @@ class Game
       @ending_choice = gets.chomp.strip
     end
     # checks to see if the pawn path is clear
-    if @board.retrieve_class(@starting_choice) == Pawn
+    if @board.retrieve_class(@starting_choice) == Pawn && @starting_choice[1] == @ending_choice[1]
       until @ending_choice == 'p' || @board.pawn_path_clear?(@starting_choice, @current_player.color)
         path_not_clear_prompt
         @ending_choice = gets.chomp.strip
@@ -630,9 +630,9 @@ class Game
 
   def last_row(color)
     if color == 'white'
-      ['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']
+      [[8, 1], [8, 2], [8, 3], [8, 4], [8, 5], [8, 6], [8, 7], [8, 8]]
     elsif color == 'black'
-      ['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']
+      [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8]]
     end
   end
 
@@ -668,7 +668,7 @@ class Game
     end
     row = last_row(@current_player.color)
     row.each do |loc|
-      if @board.retrieve_piece(revert_location(loc)) == Pawn
+      if @board.retrieve_piece(loc) == Pawn
         square = @board.retrieve_start(loc)
         square.piece = choice
         square.icon = icon
@@ -679,7 +679,7 @@ class Game
   def pawn_promotion_human
     row = last_row(@current_player.color)
     row.each do |loc|
-      if @board.retrieve_piece(revert_location(loc)) == Pawn
+      if @board.retrieve_piece(loc) == Pawn
         pawn_promote_prompt
         piece = gets.chomp
         until piece == 'q' || piece == 'b' || piece == 'k' || piece == 'r'
@@ -696,8 +696,6 @@ class Game
   # needs to be written
   def pawn_promotion_computer
   end
-    
-
 
   def move_pieces(start = @starting_choice, finish = @ending_choice)
     @board.move_piece(start, finish)
