@@ -723,6 +723,7 @@ class Game
     else
       computer_turn
       move_pieces
+      promote_piece('q')
       until king_is_in_check? == false || check_mate?
         move_pieces_back
         computer_turn
