@@ -643,40 +643,33 @@ class Game
   end
 
   def promote_piece(letter)
-    if @current_player.color == 'white'
-      if letter == 'q'
-        choice = Queen
-        icon = " \u2655 "
-      elsif letter == 'b'
-        choice = Bishop
-        icon = " \u2657 "
-      elsif letter == 'k'
-        choice = Knight
-        icon = " \u2658 "
-      elsif letter == 'r'
-        choice = Rook
-        icon = " \u2656 "
-      end
-    elsif @current_player.color == 'black'
-      if letter == 'q'
-        choice = Queen
-        icon = " \u265B "
-      elsif letter == 'b'
-        choice = Bishop
-        icon = " \u265D "
-      elsif letter == 'k'
-        choice = Knight
-        icon = " \u265E "
-      elsif letter == 'r'
-        choice = Rook
-        icon = " \u265C "
-      end
-    end
     row = last_row(@current_player.color)
     row.each do |loc|
       if @board.retrieve_class(revert_location(loc)) == Pawn
         square = @board.retrieve_start(loc)
-        square.piece = Queen.new(@current_player.color, " \u2655 ")
+        if @current_player.color == 'white'
+          case letter
+          when 'q'
+            square.piece = Queen.new(@current_player.color, " \u2655 ")
+          when 'b'
+            square.piece = Bishop.new(@current_player.color, " \u2657 ")
+          when 'k'
+            square.piece = Knight.new(@current_player.color, " \u2658 ")
+          when 'r'
+            square.piece = Rook.new(@current_player.color, " \u2656 ")
+          end
+        elsif @current_player.color == 'black'
+          case letter
+          when 'q'
+            square.piece = Queen.new(@current_player.color, " \u265B ")
+          when 'b'
+            square.piece = Bishop.new(@current_player.color, " \u265D ")
+          when 'k'
+            square.piece = Knight.new(@current_player.color, " \u265E ")
+          when 'r'
+            square.piece = Rook.new(@current_player.color, " \u265C ")
+          end
+        end
       end
     end
   end
