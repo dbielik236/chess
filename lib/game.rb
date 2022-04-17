@@ -4,6 +4,12 @@ require_relative 'board'
 require_relative 'prompts'
 require_relative 'human'
 require_relative 'computer'
+require_relative './pieces/pawn'
+require_relative './pieces/rook'
+require_relative './pieces/knight'
+require_relative './pieces/bishop'
+require_relative './pieces/queen'
+require_relative './pieces/king'
 
 # controls the gameplay
 class Game
@@ -668,10 +674,9 @@ class Game
     end
     row = last_row(@current_player.color)
     row.each do |loc|
-      if @board.retrieve_piece(loc) == Pawn
+      if @board.retrieve_class(revert_location(loc)) == Pawn
         square = @board.retrieve_start(loc)
-        square.piece = choice
-        square.icon = icon
+        square.piece = Queen.new(@current_player.color, " \u2655 ")
       end
     end
   end
@@ -679,7 +684,7 @@ class Game
   def pawn_promotion_human
     row = last_row(@current_player.color)
     row.each do |loc|
-      if @board.retrieve_piece(loc) == Pawn
+      if @board.retrieve_class(revert_location(loc)) == Pawn
         pawn_promote_prompt
         piece = gets.chomp
         until piece == 'q' || piece == 'b' || piece == 'k' || piece == 'r'

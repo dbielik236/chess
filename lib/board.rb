@@ -137,7 +137,6 @@ class Board
     @starting_piece.legal_move?(starting_location, ending_location, @starting_piece, @ending_piece)
   end
 
-  # private method?
   def retrieve_start(location)
     @grid.each do |row|
       row.each do |square|
@@ -148,6 +147,7 @@ class Board
         end
       end
     end
+    @starting_square
   end
 
   def retrieve_start_piece(location)
@@ -160,6 +160,7 @@ class Board
         end
       end
     end
+    @starting_piece
   end
 
   # private method?
@@ -187,6 +188,7 @@ class Board
       end
     end
   end
+
   # used by board class
   def retrieve_class(location)
     actual_loc = convert_location(location)
@@ -222,7 +224,6 @@ class Board
            piece.instance_of?(type_of_piece) &&
            piece.color == color
           @location = square.location
-          
         else
           next
         end
