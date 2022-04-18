@@ -1,37 +1,37 @@
 --- !ruby/object:Game
 board: !ruby/object:Board
-  white_pawn1: &18 !ruby/object:Pawn
+  white_pawn1: &19 !ruby/object:Pawn
     color: white
     icon: " ♙ "
     move_count: 0
-  white_pawn2: &19 !ruby/object:Pawn
+  white_pawn2: &20 !ruby/object:Pawn
     color: white
     icon: " ♙ "
     move_count: 0
-  white_pawn3: &20 !ruby/object:Pawn
+  white_pawn3: &18 !ruby/object:Pawn
     color: white
     icon: " ♙ "
-    move_count: 0
+    move_count: 1
   white_pawn4: &21 !ruby/object:Pawn
     color: white
     icon: " ♙ "
     move_count: 0
-  white_pawn5: &17 !ruby/object:Pawn
-    color: white
-    icon: " ♙ "
-    move_count: 1
-  white_pawn6: &22 !ruby/object:Pawn
+  white_pawn5: &22 !ruby/object:Pawn
     color: white
     icon: " ♙ "
     move_count: 0
-  white_pawn7: &23 !ruby/object:Pawn
+  white_pawn6: &23 !ruby/object:Pawn
     color: white
     icon: " ♙ "
     move_count: 0
-  white_pawn8: &24 !ruby/object:Pawn
+  white_pawn7: &24 !ruby/object:Pawn
     color: white
     icon: " ♙ "
     move_count: 0
+  white_pawn8: &17 !ruby/object:Pawn
+    color: white
+    icon: " ♙ "
+    move_count: 2
   white_rook1: &25 !ruby/object:Rook
     color: white
     icon: " ♖ "
@@ -64,43 +64,43 @@ board: !ruby/object:Board
     color: white
     icon: " ♔ "
     move_count: 0
-  black_pawn1: &9 !ruby/object:Pawn
+  black_pawn1: &8 !ruby/object:Pawn
     color: black
     icon: " ♟ "
     move_count: 0
-  black_pawn2: &10 !ruby/object:Pawn
+  black_pawn2: &9 !ruby/object:Pawn
     color: black
     icon: " ♟ "
     move_count: 0
-  black_pawn3: &11 !ruby/object:Pawn
-    color: black
-    icon: " ♟ "
-    move_count: 0
-  black_pawn4: &12 !ruby/object:Pawn
-    color: black
-    icon: " ♟ "
-    move_count: 0
-  black_pawn5: &13 !ruby/object:Pawn
-    color: black
-    icon: " ♟ "
-    move_count: 0
-  black_pawn6: &14 !ruby/object:Pawn
-    color: black
-    icon: " ♟ "
-    move_count: 0
-  black_pawn7: &15 !ruby/object:Pawn
-    color: black
-    icon: " ♟ "
-    move_count: 0
-  black_pawn8: &16 !ruby/object:Pawn
+  black_pawn3: &16 !ruby/object:Pawn
     color: black
     icon: " ♟ "
     move_count: 1
+  black_pawn4: &10 !ruby/object:Pawn
+    color: black
+    icon: " ♟ "
+    move_count: 0
+  black_pawn5: &11 !ruby/object:Pawn
+    color: black
+    icon: " ♟ "
+    move_count: 0
+  black_pawn6: &12 !ruby/object:Pawn
+    color: black
+    icon: " ♟ "
+    move_count: 0
+  black_pawn7: &13 !ruby/object:Pawn
+    color: black
+    icon: " ♟ "
+    move_count: 0
+  black_pawn8: &14 !ruby/object:Pawn
+    color: black
+    icon: " ♟ "
+    move_count: 0
   black_rook1: &1 !ruby/object:Rook
     color: black
     icon: " ♜ "
     move_count: 0
-  black_rook2: &8 !ruby/object:Rook
+  black_rook2: &7 !ruby/object:Rook
     color: black
     icon: " ♜ "
     move_count: 0
@@ -108,10 +108,10 @@ board: !ruby/object:Board
     color: black
     icon: " ♞ "
     move_count: 0
-  black_knight2: &7 !ruby/object:Knight
+  black_knight2: &15 !ruby/object:Knight
     color: black
     icon: " ♞ "
-    move_count: 0
+    move_count: 1
   black_bishop1: &3 !ruby/object:Bishop
     color: black
     icon: " ♝ "
@@ -164,82 +164,82 @@ board: !ruby/object:Board
       location:
       - 8
       - 7
-      piece: *7
+      piece: 
     - !ruby/object:Square
       location:
       - 8
       - 8
-      piece: *8
+      piece: *7
   - - !ruby/object:Square
       location:
       - 7
       - 1
+      piece: *8
+    - !ruby/object:Square
+      location:
+      - 7
+      - 2
       piece: *9
     - !ruby/object:Square
       location:
       - 7
-      - 2
+      - 3
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 7
+      - 4
       piece: *10
     - !ruby/object:Square
       location:
       - 7
-      - 3
+      - 5
       piece: *11
     - !ruby/object:Square
       location:
       - 7
-      - 4
+      - 6
       piece: *12
     - !ruby/object:Square
       location:
       - 7
-      - 5
+      - 7
       piece: *13
     - !ruby/object:Square
       location:
       - 7
-      - 6
+      - 8
       piece: *14
+  - - !ruby/object:Square
+      location:
+      - 6
+      - 1
+      piece: 
     - !ruby/object:Square
       location:
-      - 7
-      - 7
+      - 6
+      - 2
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 6
+      - 3
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 6
+      - 4
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 6
+      - 5
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 6
+      - 6
       piece: *15
-    - &31 !ruby/object:Square
-      location:
-      - 7
-      - 8
-      piece: 
-  - - !ruby/object:Square
-      location:
-      - 6
-      - 1
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 6
-      - 2
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 6
-      - 3
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 6
-      - 4
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 6
-      - 5
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 6
-      - 6
-      piece: 
     - !ruby/object:Square
       location:
       - 6
@@ -264,7 +264,7 @@ board: !ruby/object:Board
       location:
       - 5
       - 3
-      piece: 
+      piece: *16
     - !ruby/object:Square
       location:
       - 5
@@ -283,53 +283,53 @@ board: !ruby/object:Board
     - !ruby/object:Square
       location:
       - 5
+      - 7
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 5
+      - 8
+      piece: 
+  - - !ruby/object:Square
+      location:
+      - 4
+      - 1
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 4
+      - 2
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 4
+      - 3
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 4
+      - 4
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 4
+      - 5
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 4
+      - 6
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 4
       - 7
       piece: 
     - &32 !ruby/object:Square
       location:
-      - 5
+      - 4
       - 8
-      piece: *16
-  - - !ruby/object:Square
-      location:
-      - 4
-      - 1
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 4
-      - 2
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 4
-      - 3
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 4
-      - 4
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 4
-      - 5
       piece: *17
-    - !ruby/object:Square
-      location:
-      - 4
-      - 6
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 4
-      - 7
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 4
-      - 8
-      piece: 
   - - !ruby/object:Square
       location:
       - 3
@@ -344,47 +344,47 @@ board: !ruby/object:Board
       location:
       - 3
       - 3
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 3
-      - 4
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 3
-      - 5
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 3
-      - 6
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 3
-      - 7
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 3
-      - 8
-      piece: 
-  - - !ruby/object:Square
-      location:
-      - 2
-      - 1
       piece: *18
     - !ruby/object:Square
       location:
+      - 3
+      - 4
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 3
+      - 5
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 3
+      - 6
+      piece: 
+    - !ruby/object:Square
+      location:
+      - 3
+      - 7
+      piece: 
+    - &31 !ruby/object:Square
+      location:
+      - 3
+      - 8
+      piece: 
+  - - !ruby/object:Square
+      location:
       - 2
-      - 2
+      - 1
       piece: *19
     - !ruby/object:Square
       location:
       - 2
-      - 3
+      - 2
       piece: *20
+    - !ruby/object:Square
+      location:
+      - 2
+      - 3
+      piece: 
     - !ruby/object:Square
       location:
       - 2
@@ -394,22 +394,22 @@ board: !ruby/object:Board
       location:
       - 2
       - 5
-      piece: 
-    - !ruby/object:Square
-      location:
-      - 2
-      - 6
       piece: *22
     - !ruby/object:Square
       location:
       - 2
-      - 7
+      - 6
       piece: *23
     - !ruby/object:Square
       location:
       - 2
-      - 8
+      - 7
       piece: *24
+    - !ruby/object:Square
+      location:
+      - 2
+      - 8
+      piece: 
   - - !ruby/object:Square
       location:
       - 1
@@ -450,23 +450,23 @@ board: !ruby/object:Board
       - 1
       - 8
       piece: *30
-  starting_piece: *30
+  starting_piece: *7
   ending_piece: *5
+  current_piece: 
   starting_square: *31
   ending_square: *32
   reserve: 
   location: *33
-  current_piece: 
-human: !ruby/object:Human
-  name: David
-  color: white
-computer: &34 !ruby/object:Computer
+human: &34 !ruby/object:Human
+  name: Lucy
   color: black
+computer: !ruby/object:Computer
+  color: white
   name: The computer
 current_player: *34
 check: false
 num: 0
 castle: 0
-starting_choice: h7
-ending_choice: h5
+starting_choice: h3
+ending_choice: h4
 results: []

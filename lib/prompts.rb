@@ -112,7 +112,7 @@ module Display
   end
 
   def game_has_been_saved_display
-    puts 'Game saved successfully. You may close out or keep playing.'
+    puts 'Game saved successfully. Close out or hit enter to keep playing.'
   end
 
   def not_a_valid_choice_prompt

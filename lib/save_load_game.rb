@@ -15,6 +15,7 @@ module SaveLoad
     dump = YAML.dump(current_game)
     File.open(File.join(Dir.pwd, "/lib/saved_games/#{filename}.yaml"), 'w') { |file| file.write dump }
     game_has_been_saved_display
+    gets.chomp
   end
 
   def choose_game
@@ -28,7 +29,7 @@ module SaveLoad
     end
     # need to limit the answers to get here
     choice = gets.chomp
-    until choices.include?(choice.to_i - 1)
+    until choice == '' || choices.include?(choice.to_i - 1)
       not_a_valid_choice_prompt
       choice = gets.chomp
     end

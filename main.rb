@@ -8,18 +8,22 @@ require_relative './lib/save_load_game'
 include Display
 include SaveLoad
 
-welcome_prompt
-option = gets.chomp
-until option == 'n' || option == 'l'
-  new_or_load_error_prompt
+def play_chess
+  welcome_prompt
   option = gets.chomp
+  until option == 'n' || option == 'l'
+    new_or_load_error_prompt
+    option = gets.chomp
+  end
+  if option == 'n'
+    game = Game.new
+    game.establish_game
+    game.play_game
+  elsif option == 'l'
+    game = load_game
+    game.play_game
+  end
+  check_mate_prompt
 end
-if option == 'n'
-  game = Game.new
-  game.establish_game
-  game.play_game
-elsif option == 'l'
-  game = load_game
-  game.play_game
-end
-check_mate_prompt
+
+play_chess

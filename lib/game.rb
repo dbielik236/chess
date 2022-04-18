@@ -765,7 +765,6 @@ class Game
     unless @castle == 1
       move_pieces
     end
-    @board.display
     switch_current_player
   end
 
@@ -780,26 +779,7 @@ class Game
 
   def play_game
     until check_mate?
-      one_turn
-      if @current_player == @computer
-        display_computer_making_turn
-        sleep(0.25)
-        print "."
-        sleep(0.25)
-        print "."
-        sleep(0.25)
-        print ".\n"
-        sleep(0.25)
-      end
       @board.display
-      if @current_player == @computer
-        display_computer_turn
-      end
-      if @current_player == @human
-        pawn_promotion_human
-      elsif @current_player == @computer
-        promote_piece('q')
-      end
       if @current_player == @human
         save_the_game_prompt
         choice = gets.chomp
@@ -808,6 +788,25 @@ class Game
         else
           puts 'Game not saved.'
         end
+      end
+      one_turn
+      if @current_player == @computer
+        display_computer_making_turn
+        sleep(0.5)
+        print "."
+        sleep(0.5)
+        print "."
+        sleep(0.5)
+        print ".\n"
+        sleep(0.5)
+      end
+      if @current_player == @computer
+        display_computer_turn
+      end
+      if @current_player == @human
+        pawn_promotion_human
+      elsif @current_player == @computer
+        promote_piece('q')
       end
       switch_current_player
     end
