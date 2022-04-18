@@ -34,6 +34,6 @@ until choice == 'y' || choice == 'n'
 end
 if choice == 'y'
   play_chess
-elsif choice 'n'
+elsif choice == 'n'
   thanks_for_playing_prompt
 end

@@ -187,6 +187,7 @@ class Game
     list.each do |starting_location|
       @results.each do |ending_location|
         if @board.legal_start?(starting_location, @current_player.color) &&
+           @board.legal_finish?(ending_location, @current_player.color) &&
            @board.legal_move_for_piece?(starting_location, ending_location)
           if @board.retrieve_class(ending_location) == Bishop && @board.diagonal_clear?(starting_location, ending_location) == false
             pieces << starting_location
@@ -798,6 +799,9 @@ class Game
         promote_piece('q')
       end
       switch_current_player
+    end
+    if check_mate?
+      @board.display
     end
   end
 end
