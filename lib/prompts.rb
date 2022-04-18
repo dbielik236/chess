@@ -28,7 +28,7 @@ module Display
   end
 
   def starting_piece_prompt
-    puts "#{@human.name}, choose a piece to move (for example a1 or f7). (Type c to castle.)"
+    puts "#{@human.name}, choose a piece to move (for example a1 or f7). (Type c to castle or s to save.)"
   end
 
   def illegal_starting_location_prompt
@@ -117,5 +117,13 @@ module Display
 
   def not_a_valid_choice_prompt
     puts 'You must choose one of the numbers listed.'
+  end
+
+  def play_again_prompt
+    puts 'Would you like to play again? Type y or n.'
+  end
+
+  def thanks_for_playing_prompt
+    puts 'Thanks for playing!'
   end
 end

@@ -27,3 +27,13 @@ def play_chess
 end
 
 play_chess
+play_again_prompt
+choice = gets.chomp
+until choice == 'y' || choice == 'n'
+  choice = gets.chomp
+end
+if choice == 'y'
+  play_chess
+elsif choice 'n'
+  thanks_for_playing_prompt
+end
