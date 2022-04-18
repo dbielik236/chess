@@ -14,7 +14,7 @@ require_relative 'save_load_game'
 
 # controls the gameplay
 class Game
-  attr_accessor :board, :human, :computer, :current_player
+  attr_accessor :board, :human, :computer, :current_player, :starting_choice, :ending_choice
 
   include Display
   include SaveLoad
@@ -27,6 +27,8 @@ class Game
     @check = false
     @num = 0
     @castle = 0
+    @starting_choice = nil
+    @ending_choice = nil
   end
 
   def establish_player
@@ -512,6 +514,9 @@ class Game
       rook = gets.chomp
       castle(rook)
     end
+    if @starting_choice == 's'
+      save_game
+    end
     return if @castle == 1
 
     # checks to see if the player has used the correct format
@@ -764,13 +769,16 @@ class Game
     switch_current_player
   end
 
-  def play_game
+  def establish_game
     @board.display
     establish_player
     establish_computer
     establish_current_player
     # first turn to start the game
     first_turn
+  end
+
+  def play_game
     until check_mate?
       one_turn
       if @current_player == @computer
@@ -791,6 +799,15 @@ class Game
         pawn_promotion_human
       elsif @current_player == @computer
         promote_piece('q')
+      end
+      if @current_player == @human
+        save_the_game_prompt
+        choice = gets.chomp
+        if choice == 's'
+          save_game(self)
+        else
+          puts 'Game not saved.'
+        end
       end
       switch_current_player
     end
