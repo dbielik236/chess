@@ -173,6 +173,7 @@ class Game
       [row - 1, column + 1]
     ]
     possible_moves.each do |loc|
+      # ???
       if @board.on_the_board?(loc) && @board.legal_finish?(revert_location(loc), color)
         results << in_check?(revert_location(loc))
       end
@@ -218,7 +219,8 @@ class Game
             list.each do |starting_location|
               if @board.legal_start?(starting_location, @current_player.color) &&
                  @board.legal_move_for_piece?(starting_location, revert_location([bishop_row, bishop_column])) &&
-                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color)
+                 @board.legal_finish?(revert_location([bishop_row, bishop_column]), @current_player.color) &&
+                 @board.diagonal_clear?(starting_location, revert_location([bishop_row, bishop_column]))
                 possible_moves << starting_location
               end
             end
