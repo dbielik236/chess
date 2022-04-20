@@ -481,23 +481,18 @@ class Game
     until choice == true
       @ending_choice = random_square
       starting_choice_class = @board.retrieve_class(@starting_choice)
-      if starting_choice_class == Pawn
-        choice = @board.pawn_path_clear?(@starting_choice, @ending_choice, @current_player.color)
-      end
-      if starting_choice_class == Bishop
-        choice = @board.diagonal_clear?(@starting_choice, @ending_choice)
-      end
-      if starting_choice_class == Rook
-        choice = @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
-      end
-      if starting_choice_class == Queen
-        choice = @board.all_clear?(@starting_choice, @ending_choice)
-      end
-      if @board.legal_finish?(@ending_choice, @current_player.color) && 
-         @board.legal_move_for_piece?(@starting_choice, @ending_choice)
-        choice = true
-      else
-        choice = false
+      if @board.legal_finish?(@ending_choice, @current_player.color) && @board.legal_move_for_piece?(@starting_choice, @ending_choice)
+        if starting_choice_class == Pawn
+          choice = @board.pawn_path_clear?(@starting_choice, @ending_choice, @current_player.color)
+        elsif starting_choice_class == Bishop
+          choice = @board.diagonal_clear?(@starting_choice, @ending_choice)
+        elsif starting_choice_class == Rook
+          choice = @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
+        elsif starting_choice_class == Queen
+          choice = @board.all_clear?(@starting_choice, @ending_choice)
+        else
+          choice = true
+        end
       end
     end
   end

@@ -48,7 +48,8 @@ class Board
     @black_bishop2 = Bishop.new('black', " \u265D ")
     @black_queen = Queen.new('black', " \u265B ")
     @black_king = King.new('black', " \u265A ")
-
+    @starting_piece = nil
+    @ending_piece = nil
     # grid color
     @color = 47
     @grid = [
