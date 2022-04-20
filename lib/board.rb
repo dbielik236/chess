@@ -423,18 +423,23 @@ class Board
     end
   end
 
-  def pawn_path_clear?(start, color)
+  def pawn_path_clear?(start, finish, color)
     starting_location = convert_location(start)
-    row, column = starting_location
-    if color == 'white'
-      retrieve_piece([row + 1, column])
+    ending_location = convert_location(finish)
+    starting_row, starting_column = starting_location
+    ending_row, ending_column = ending_location
+    if color == 'white' && starting_row + 2 == ending_row
+      retrieve_piece([starting_row + 1, starting_column])
       @current_piece.nil?
-    elsif color == 'black'
-      retrieve_piece([row - 1, column])
+    elsif color == 'black' && starting_row - 2 == ending_row
+      retrieve_piece([starting_row - 1, starting_column])
       @current_piece.nil?
+    else
+      true
     end
   end
 
+  # this is redundant?
   def pawn_can_take_king?(start, finish, color)
     result = false
     starting_location = convert_location(start)

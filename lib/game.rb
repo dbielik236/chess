@@ -113,11 +113,7 @@ class Game
     end
     bishops_rooks_queens = []
     @results.each do |location|
-      if @board.retrieve_class(location) == Pawn
-        if @board.pawn_can_take_king?(location, ending_location, color) == false
-          bishops_rooks_queens << location
-        end
-      elsif @board.retrieve_class(location) == Bishop
+      if @board.retrieve_class(location) == Bishop
         if @board.diagonal_clear?(location, ending_location) == false
           bishops_rooks_queens << location
         end
@@ -476,34 +472,32 @@ class Game
   end
 
   def computer_turn
+    choice = false
     @starting_choice = random_square
     # checks to makes sure that the player has a piece there
     until @board.legal_start?(@starting_choice, @current_player.color)
       @starting_choice = random_square
     end
-    @ending_choice = random_square
-    unless @board.legal_finish?(@ending_choice, @current_player.color) && @board.legal_move_for_piece?(@starting_choice, @ending_choice)
-      computer_turn
-    end
-    # checks that the finish square is available
-    if @board.retrieve_class(@starting_choice) == Pawn
-      unless @board.pawn_path_clear?(@starting_choice, @current_player.color)
-        computer_turn
+    until choice == true
+      @ending_choice = random_square
+      starting_choice_class = @board.retrieve_class(@starting_choice)
+      if starting_choice_class == Pawn
+        choice = @board.pawn_path_clear?(@starting_choice, @ending_choice, @current_player.color)
       end
-    end
-    if @board.retrieve_class(@starting_choice) == Bishop
-      unless @board.diagonal_clear?(@starting_choice, @ending_choice)
-        computer_turn
+      if starting_choice_class == Bishop
+        choice = @board.diagonal_clear?(@starting_choice, @ending_choice)
       end
-    end
-    if @board.retrieve_class(@starting_choice) == Rook
-      unless @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
-        computer_turn
+      if starting_choice_class == Rook
+        choice = @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
       end
-    end
-    if @board.retrieve_class(@starting_choice) == Queen
-      unless @board.all_clear?(@starting_choice, @ending_choice)
-        computer_turn
+      if starting_choice_class == Queen
+        choice = @board.all_clear?(@starting_choice, @ending_choice)
+      end
+      if @board.legal_finish?(@ending_choice, @current_player.color) && 
+         @board.legal_move_for_piece?(@starting_choice, @ending_choice)
+        choice = true
+      else
+        choice = false
       end
     end
   end
