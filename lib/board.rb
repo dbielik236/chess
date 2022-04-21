@@ -149,30 +149,18 @@ class Board
     actual_loc = convert_location(location)
     @grid.each do |row|
       row.each do |square|
-        if square.location == actual_loc
-          @starting_piece = square.piece
-        else
-          next
-        end
+        return square.piece.class if square.location == actual_loc
       end
     end
-    @starting_piece.class
   end
-  
+
   def retrieve_location(type_of_piece, color)
     @grid.each do |row|
       row.each do |square|
         piece = square.piece
-        if piece != nil &&
-           piece.instance_of?(type_of_piece) &&
-           piece.color == color
-          @location = square.location
-        else
-          next
-        end
+        return square.location if !piece.nil? && piece.instance_of?(type_of_piece) && piece.color == color
       end
     end
-    @location
   end
 
   def up_left_clear?(start, finish)
@@ -371,36 +359,36 @@ class Board
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
     starting_row, starting_column = starting_location
-    ending_row, ending_column = ending_location
+    ending_row, _ending_column = ending_location
     if color == 'white' && starting_row + 2 == ending_row
-      retrieve_piece([starting_row + 1, starting_column])
-      @current_piece.nil?
+      current_square = retrieve_square([starting_row + 1, starting_column])
+      current_square.nil?
     elsif color == 'black' && starting_row - 2 == ending_row
-      retrieve_piece([starting_row - 1, starting_column])
-      @current_piece.nil?
+      current_square = retrieve_square([starting_row - 1, starting_column])
+      current_square.nil?
     else
       true
     end
   end
 
-  # this is redundant?
-  def pawn_can_take_king?(start, finish, color)
-    result = false
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    start_row, start_column = starting_location
-    end_row, end_column = ending_location
-    if color == 'black' && end_row == start_row - 1
-      if end_column == start_column - 1 || end_column == start_column + 1
-        result = true
-      end
-    elsif color == 'white' && end_row == start_row + 1
-      if end_column == start_column - 1 || end_column == start_column + 1
-        result = true
-      end
-    end
-    result
-  end
+  # I don't think this is being used
+  # def pawn_can_take_king?(start, finish, color)
+  #  result = false
+  # starting_location = convert_location(start)
+  # ending_location = convert_location(finish)
+  #  start_row, start_column = starting_location
+  # end_row, end_column = ending_location
+  #  if color == 'black' && end_row == start_row - 1
+  #    if end_column == start_column - 1 || end_column == start_column + 1
+  #      result = true
+  #    end
+  #  elsif color == 'white' && end_row == start_row + 1
+  #    if end_column == start_column - 1 || end_column == start_column + 1
+  #      result = true
+  #    end
+  #  end
+  #  result
+  # end
 
   def move_piece(start, finish)
     starting_location = convert_location(start)
