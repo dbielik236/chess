@@ -36,15 +36,15 @@ class Game
     name = gets.chomp.strip
     player_color_prompt
     color = gets.chomp.strip
-    until color == 'w' or color == 'b'
+    until color.include?('w') || color.include?('b')
       color_error_prompt
       color = gets.chomp
     end
-    if color == 'w'
-      @human = Human.new(name, 'white')
-    else
-      @human = Human.new(name, 'black')
-    end
+    @human = if color == 'w'
+               Human.new(name, 'white')
+             else
+               Human.new(name, 'black')
+             end
   end
 
   def establish_computer
@@ -73,8 +73,8 @@ class Game
   end
 
   def create_list
-    rows = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-    columns = ['1', '2', '3', '4', '5', '6', '7', '8']
+    rows = %w[a b c d e f g h]
+    columns = %w[1 2 3 4 5 6 7 8]
     every_location = []
     num = 0
     until num == 8

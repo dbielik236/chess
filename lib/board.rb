@@ -172,8 +172,8 @@ class Board
     column -= 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      retrieve_piece([row, column])
-      results << @current_piece.nil?
+      current_square = retrieve_square([row, column])
+      results << current_square.piece.nil?
       row += 1
       column -= 1
       i += 1
@@ -190,8 +190,8 @@ class Board
     column += 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      retrieve_piece([row, column])
-      results << @current_piece.nil?
+      current_square = retrieve_square([row, column])
+      results << current_square.piece.nil?
       row += 1
       column += 1
       i += 1
@@ -208,8 +208,8 @@ class Board
     column -= 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      retrieve_piece([row, column])
-      results << @current_piece.nil?
+      current_square = retrieve_square([row, column])
+      results << current_square.piece.nil?
       row -= 1
       column -= 1
       i += 1
@@ -226,8 +226,8 @@ class Board
     column += 1
     i = 1
     until i == 9 || ending_location == [row, column]
-      retrieve_piece([row, column])
-      results << @current_piece.nil?
+      current_square = retrieve_square([row, column])
+      results << current_square.piece.nil?
       row -= 1
       column += 1
       i += 1
