@@ -10,7 +10,7 @@ require_relative './pieces/king'
 
 # manages the grid, display, moving pieces, and check(mate)
 class Board
-  attr_accessor :grid, :starting_piece, :ending_piece
+  attr_accessor :grid
 
   def initialize
     # white pieces
@@ -48,8 +48,6 @@ class Board
     @black_bishop2 = Bishop.new('black', " \u265D ")
     @black_queen = Queen.new('black', " \u265B ")
     @black_king = King.new('black', " \u265A ")
-    @starting_piece = nil
-    @ending_piece = nil
     # grid color
     @color = 47
     @grid = [
@@ -116,75 +114,32 @@ class Board
 
   def legal_start?(start, color)
     starting_location = convert_location(start)
-    retrieve_start_piece(starting_location)
-    if @starting_piece == nil || @starting_piece.color != color
+    starting_square = retrieve_square(starting_location)
+    if starting_square.piece.nil? || starting_square.piece.color != color
       false
-    elsif @starting_piece.color == color
+    elsif starting_square.piece.color == color
       true
     end
   end
 
   def legal_finish?(finish, color)
     ending_location = convert_location(finish)
-    retrieve_end_piece(ending_location)
-    @ending_piece.nil? || @ending_piece.color != color
+    ending_square = retrieve_square(ending_location)
+    ending_square.piece.nil? || ending_square.piece.color != color
   end
 
   def legal_move_for_piece?(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
-    retrieve_start_piece(starting_location)
-    retrieve_end_piece(ending_location)
-    @starting_piece.legal_move?(starting_location, ending_location, @starting_piece, @ending_piece)
+    starting_square = retrieve_square(starting_location)
+    ending_square = retrieve_square(ending_location)
+    starting_square.piece.legal_move?(starting_location, ending_location, starting_square.piece, ending_square.piece)
   end
 
-  def retrieve_start(location)
+  def retrieve_square(location)
     @grid.each do |row|
       row.each do |square|
-        if square.location == location
-          @starting_square = square
-        else
-          next
-        end
-      end
-    end
-    @starting_square
-  end
-
-  def retrieve_start_piece(location)
-    @grid.each do |row|
-      row.each do |square|
-        if square.location == location
-          @starting_piece = square.piece
-        else
-          next
-        end
-      end
-    end
-    @starting_piece
-  end
-
-  # private method?
-  def retrieve_end(location)
-    @grid.each do |row|
-      row.each do |square|
-        if square.location == location
-          @ending_square = square
-        else
-          next
-        end
-      end
-    end
-  end
-
-  def retrieve_end_piece(location)
-    @grid.each do |row|
-      row.each do |square|
-        if square.location == location
-          @ending_piece = square.piece
-        else
-          next
-        end
+        return square if square.location == location
       end
     end
   end
@@ -203,19 +158,7 @@ class Board
     end
     @starting_piece.class
   end
-
-  def retrieve_piece(location)
-    @grid.each do |row|
-      row.each do |square|
-        next unless square.location == location
-
-        @current_piece = square.piece
-      end
-    end
-    @current_piece
-  end
-
-  # can this be combined with others?
+  
   def retrieve_location(type_of_piece, color)
     @grid.each do |row|
       row.each do |square|
@@ -462,25 +405,25 @@ class Board
   def move_piece(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
-    retrieve_start(starting_location)
-    retrieve_end(ending_location)
-    @starting_square.piece.move_count += 1
-    if @ending_square.piece == nil
-      @reserve = nil
-    else
-      @reserve = @ending_square.piece
-    end
-    @ending_square.piece = @starting_square.piece
-    @starting_square.piece = nil
+    starting_square = retrieve_square(starting_location)
+    ending_square = retrieve_square(ending_location)
+    starting_square.piece.move_count += 1
+    @reserve = if ending_square.piece.nil?
+                 nil
+               else
+                 ending_square.piece
+               end
+    ending_square.piece = starting_square.piece
+    starting_square.piece = nil
   end
 
   def move_piece_back(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)
-    retrieve_start(starting_location)
-    retrieve_end(ending_location)
-    @ending_square.piece.move_count -= 1
-    @starting_square.piece = @ending_square.piece
-    @ending_square.piece = @reserve
+    starting_square = retrieve_square(starting_location)
+    ending_square = retrieve_square(ending_location)
+    ending_square.piece.move_count -= 1
+    starting_square.piece = ending_square.piece
+    ending_square.piece = @reserve
   end
 end
