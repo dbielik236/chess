@@ -32,7 +32,7 @@ module Display
   end
 
   def starting_piece_prompt
-    puts "#{@current_player.name}, choose a piece to move (for example a1 or f7). (Type c to castle or s to save.)"
+    puts "#{@current_player.name} (#{@current_player.color}), choose a piece to move. Type c to castle or s to save."
   end
 
   def illegal_starting_location_prompt
@@ -48,11 +48,11 @@ module Display
   end
 
   def illegal_ending_location_prompt
-    puts 'Illegal move. Please select again. Or type p to choose another piece.'
+    puts 'Illegal move. Please select another place to move to, or type p to choose another piece.'
   end
 
   def incorrect_format_prompt
-    puts 'Enter a location first with row-letter then column-number (for example, a1 or f7). '
+    puts 'Enter a location first with row-letter then column-number (for example, a1 or f7), or type p to choose another piece.'
   end
 
   def path_not_clear_prompt
@@ -60,15 +60,11 @@ module Display
   end
 
   def illegal_move_for_piece_prompt
-    puts 'That piece cannot go there. Please choose again. Or type p to choose another piece.'
-  end
-
-  def display_computer_making_turn
-    print 'The computer is thinking'
+    puts 'That piece cannot go there. Please choose another place to move to, or type p to choose another piece.'
   end
 
   def king_is_in_check_prompt
-    puts 'Your king is in check. Your move must get the king out of check.'
+    puts "#{@current_player.name}, your king is in check. Your move must get your king out of check."
   end
 
   def move_will_put_king_in_check_prompt
@@ -76,7 +72,7 @@ module Display
   end
 
   def check_mate_prompt
-    puts 'Checkmate!'
+    puts "Checkmate! #{@current_player.name}, you win!"
   end
 
   def cannot_castle_prompt
@@ -93,10 +89,6 @@ module Display
 
   def display_piece_promoted
     puts 'Your pawn has been promoted!'
-  end
-
-  def computer_king_is_in_check_display
-    puts "The computer\'s king is in check."
   end
 
   def file_name_prompt

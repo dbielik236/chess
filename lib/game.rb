@@ -465,16 +465,19 @@ class Game
       save_game(self)
     end
     return if @castle == 1
-
     # checks to see if the player has used the correct format
-    until @board.correct_format?(@starting_choice) && @board.legal_start?(@starting_choice, @current_player.color)
+    until @board.correct_format?(@starting_choice)
       incorrect_format_prompt
+      @starting_choice = gets.chomp.strip
+    end
+    until @board.legal_start?(@starting_choice, @current_player.color)
+      illegal_starting_location_prompt
       @starting_choice = gets.chomp.strip
     end
     ending_square_prompt
     # checks to see if the player used the right format
     @ending_choice = gets.chomp.strip
-    until @board.correct_format?(@ending_choice)
+    until @ending_choice == 'p' || @board.correct_format?(@ending_choice)
       incorrect_format_prompt
       @ending_choice = gets.chomp.strip
     end
@@ -606,7 +609,7 @@ class Game
     row = last_row(@current_player.color)
     row.each do |loc|
       if @board.retrieve_class(revert_location(loc)) == Pawn
-        square = @board.retrieve_start(loc)
+        square = @board.retrieve_square(loc)
         if @current_player.color == 'white'
           case letter
           when 'q'
@@ -638,6 +641,7 @@ class Game
     row = last_row(@current_player.color)
     row.each do |loc|
       if @board.retrieve_class(revert_location(loc)) == Pawn
+        @board.display
         pawn_promote_prompt
         piece = gets.chomp
         until piece == 'q' || piece == 'b' || piece == 'k' || piece == 'r'
@@ -700,6 +704,7 @@ class Game
       switch_current_player
     end
     if check_mate?
+      switch_current_player
       @board.display
     end
   end
