@@ -531,13 +531,13 @@ class Game
 
   def castle(rook_location)
     king_location = @board.retrieve_location(King, @current_player.color)
-    king = @board.retrieve_piece(king_location)
-    rook = @board.retrieve_piece(@board.convert_location(rook_location))
+    king = @board.retrieve_square(king_location).piece
+    rook = @board.retrieve_square(@board.convert_location(rook_location)).piece
     if king.move_count.zero? && rook.move_count.zero? && king_is_in_check? == false
       if rook_location == 'a1'
-        if @board.retrieve_piece(@board.convert_location('b1')).nil? &&
-           @board.retrieve_piece(@board.convert_location('c1')).nil? &&
-           @board.retrieve_piece(@board.convert_location('d1')).nil? &&
+        if @board.retrieve_square(@board.convert_location('b1')).piece.nil? &&
+           @board.retrieve_square(@board.convert_location('c1')).piece.nil? &&
+           @board.retrieve_square(@board.convert_location('d1')).piece.nil? &&
            in_check?('b1') == false &&
            in_check?('c1') == false &&
            in_check?('d1') == false
@@ -550,8 +550,8 @@ class Game
         end
       end
       if rook_location == 'h1'
-        if @board.retrieve_piece(@board.convert_location('g1')).nil? &&
-           @board.retrieve_piece(@board.convert_location('f1')).nil? &&
+        if @board.retrieve_square(@board.convert_location('g1')).piece.nil? &&
+           @board.retrieve_square(@board.convert_location('f1')).piece.nil? &&
            in_check?('g1') == false &&
            in_check?('f1') == false
           move_pieces('h1', 'f1')
@@ -563,9 +563,9 @@ class Game
         end
       end
       if rook_location == 'a8'
-        if @board.retrieve_piece(@board.convert_location('b8')).nil? &&
-           @board.retrieve_piece(@board.convert_location('c8')).nil? &&
-           @board.retrieve_piece(@board.convert_location('d8')).nil? &&
+        if @board.retrieve_square(@board.convert_location('b8')).piece.nil? &&
+           @board.retrieve_square(@board.convert_location('c8')).piece.nil? &&
+           @board.retrieve_square(@board.convert_location('d8')).piece.nil? &&
            in_check?('b8') == false &&
            in_check?('c8') == false &&
            in_check?('d8') == false
@@ -578,8 +578,8 @@ class Game
         end
       end
       if rook_location == 'h8'
-        if @board.retrieve_piece(@board.convert_location('g8')).nil? &&
-           @board.retrieve_piece(@board.convert_location('f8')).nil? &&
+        if @board.retrieve_square(@board.convert_location('g8')).piece.nil? &&
+           @board.retrieve_square(@board.convert_location('f8')).piece.nil? &&
            in_check?('g8') == false &&
            in_check?('f8') == false
           move_pieces('h8', 'f8')
