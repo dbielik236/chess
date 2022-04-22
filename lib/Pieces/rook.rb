@@ -42,7 +42,7 @@ class Rook
     possible_moves = []
     until !@board.on_the_board?([start_row, start_column]) ||
           @board.retrieve_square([start_row, start_column]).piece.color == @current_player.color
-      start_column += 1
+      start_column -= 1
       square = @board.retrieve_square([start_row, start_column])
       possible_moves << [start_row, start_column] if square.piece.nil? || square.piece.color != @current_player.color
     end
@@ -52,16 +52,16 @@ class Rook
   def right_moves(start)
     start_row, start_column = start
     possible_moves = []
-    until !@board.on_the_board?(start_row, start_column) || @board.retrieve_square.piece.color == @current_player.color
+    until !@board.on_the_board?([start_row, start_column]) ||
+          @board.retrieve_square([start_row, start_column]).piece.color == @current_player.color
       start_column += 1
-      if @board.retrieve_square.piece.nil? || @board.retrieve_square.piece.color != @current_player.color
-        possible_moves << [start_row, start_column]
-      end
+      square = @board.retrieve_square([start_row, start_column])
+      possible_moves << [start_row, start_column] if square.piece.nil? || square.piece.color != @current_player.color
     end
     possible_moves
   end
 
-  def possible_moves
-    left_moves + right_moves + forward_moves + backward_moves
+  def possible_moves_for_piece(start)
+    left_moves(start) + right_moves(start) + forward_moves(start) + backward_moves(start)
   end
 end

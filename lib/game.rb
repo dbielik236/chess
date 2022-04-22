@@ -520,15 +520,10 @@ class Game
       illegal_starting_location_prompt
       @starting_choice = gets.chomp.strip
     end
+    @board.show_options(@starting_choice)
     ending_square_prompt
-    # checks to see if the player used the right format
-    @ending_choice = gets.chomp.strip
-    until @board.correct_format?(@ending_choice)
-      incorrect_format_prompt
-      @ending_choice = gets.chomp.strip
-    end
     # checks that the finish square is available
-    until @ending_choice == 'p' || @board.legal_finish?(@ending_choice, @current_player.color)
+    until @ending_choice == 'p' || @board.legal_finish?(@starting_choice, @ending_choice)
       illegal_ending_location_prompt
       @ending_choice = gets.chomp.strip
     end

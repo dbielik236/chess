@@ -10,7 +10,9 @@ class Pawn
     @move_count = 0
   end
 
-  def legal_move?(start, starting_piece, ending_piece)
+  
+
+  def possible_moves(start)
     start_row, start_column = start
 
     # for white pawns

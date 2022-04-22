@@ -65,7 +65,7 @@ class Bishop
     possible_moves
   end
 
-  def possible_moves
-    up_left_moves + up_right_moves + down_left_moves + downn_right_moves
+  def possible_moves_for_piece(start)
+    up_left_moves(start) + up_right_moves(start) + down_left_moves(start) + downn_right_moves(start)
   end
 end

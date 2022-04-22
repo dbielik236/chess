@@ -89,10 +89,10 @@ class Board
     puts '  a  b  c  d  e  f  g  h'
   end
 
-  def retrieve_square(location)
+  def retrieve_square(loc)
     @grid.each do |row|
       row.each do |square|
-        return square if square.location == location
+        return square if square.location == loc
       end
     end
   end
@@ -130,45 +130,30 @@ class Board
     end
   end
 
-  # not going to need this eventually
-  def legal_finish?(finish, color)
-    ending_location = convert_location(finish)
-    ending_square = retrieve_square(ending_location)
-    ending_square.piece.nil? || ending_square.piece.color != color
+  def legal_finish?(start, finish)
+    possible_moves = possible_moves(start)
+    possible_moves.include?(convert_location(finish))
   end
 
   def possible_moves(start)
     starting_location = convert_location(start)
     starting_square = retrieve_square(starting_location)
-    starting_square.piece.possible_moves(starting_location)
+    starting_square.piece.possible_moves_for_piece(starting_location)
   end
 
-  def possible_moves_on_board(start)
-    possible_moves = possible_moves(start)
-    possible_moves.select do |location|
-      on_the_board?(location)
-    end
-  end
-
-  def bishop_moves(start)
-    starting_location = convert_location(start)
-    row, column = starting_location
-    possible_moves_on_board = possible_moves_on_board(start)
-    possible_moves_on_board.each do |location|
-      if retrieve_square.piece.nil?
-
-      elsif retrieve_square
-      end
-    end
-  end
-
-  # used by board class
   def retrieve_class(location)
     actual_loc = convert_location(location)
     @grid.each do |row|
       row.each do |square|
         return square.piece.class if square.location == actual_loc
       end
+    end
+  end
+
+  def show_options(start)
+    possible_moves = possible_moves(start)
+    possible_moves.each do |location|
+      p "#{location} "
     end
   end
 
@@ -180,199 +165,6 @@ class Board
       end
     end
   end
-
-  def up_left_clear?(starting_location, target_location)
-    row, column = starting_location
-    results = []
-    row -= 1
-    column += 1
-    until target_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      row -= 1
-      column += 1
-    end
-    !results.include?(false)
-  end
-
-  def up_right_clear?(starting_location, target_location)
-    row, column = starting_location
-    results = []
-    row -= 1
-    column -= 1
-    until target_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      row -= 1
-      column -= 1
-    end
-    !results.include?(false)
-  end
-
-  def down_left_clear?(starting_location, target_location)
-    row, column = starting_location
-    results = []
-    row += 1
-    column += 1
-    until target_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      row += 1
-      column += 1
-    end
-    !results.include?(false)
-  end
-
-  def down_right_clear?(starting_location, target_location)
-    row, column = starting_location
-    results = []
-    row += 1
-    column -= 1
-    until target_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      row += 1
-      column -= 1
-    end
-    !results.include?(false)
-  end
-
-  def diagonal_clear?(starting_location, target_location)
-    start_row, start_column = starting_location
-    end_row, end_column = target_location
-    if end_row > start_row && end_column < start_column
-      up_left_clear?(start, finish)
-    elsif end_row > start_row && end_column > start_column
-      up_right_clear?(start, finish)
-    elsif end_row < start_row && end_column < start_column
-      down_left_clear?(start, finish)
-    elsif end_row < start_row && end_column > start_column
-      down_right_clear?(start, finish)
-    end
-  end
-
-  def forward_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    row, column = starting_location
-    results = []
-    row += 1
-    until ending_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      row += 1
-    end
-    !results.include?(false)
-  end
-
-  def backward_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    row, column = starting_location
-    results = []
-    row -= 1
-    until ending_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      row -= 1
-    end
-    !results.include?(false)
-  end
-
-  def left_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    row, column = starting_location
-    results = []
-    column -= 1
-    until ending_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      column -= 1
-    end
-    !results.include?(false)
-  end
-
-  def right_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    row, column = starting_location
-    results = []
-    column += 1
-    until ending_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      column += 1
-    end
-    !results.include?(false)
-  end
-
-  def vertical_horizontal_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    start_row, start_column = starting_location
-    end_row, end_column = ending_location
-    if end_row > start_row
-      forward_clear?(start, finish)
-    elsif end_row < start_row
-      backward_clear?(start, finish)
-    elsif end_column > start_column
-      right_clear?(start, finish)
-    elsif end_column < start_column
-      left_clear?(start, finish)
-    end
-  end
-
-  def all_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    start_row, start_column = starting_location
-    end_row, end_column = ending_location
-    if end_row > start_row && end_column < start_column
-      up_left_clear?(start, finish)
-    elsif end_row > start_row && end_column > start_column
-      up_right_clear?(start, finish)
-    elsif end_row < start_row && end_column < start_column
-      down_left_clear?(start, finish)
-    elsif end_row < start_row && end_column > start_column
-      down_right_clear?(start, finish)
-    elsif end_row > start_row
-      forward_clear?(start, finish)
-    elsif end_row < start_row
-      backward_clear?(start, finish)
-    elsif end_column > start_column
-      right_clear?(start, finish)
-    elsif end_column < start_column
-      left_clear?(start, finish)
-    end
-  end
-
-  def pawn_path_clear?(start, finish, color)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    starting_row, starting_column = starting_location
-    ending_row, _ending_column = ending_location
-    if color == 'white' && starting_row + 2 == ending_row
-      current_square = retrieve_square([starting_row + 1, starting_column])
-      current_square.nil?
-    elsif color == 'black' && starting_row - 2 == ending_row
-      current_square = retrieve_square([starting_row - 1, starting_column])
-      current_square.nil?
-    else
-      true
-    end
-  end
-
-  # I don't think this is being used
-  # def pawn_can_take_king?(start, finish, color)
-  #  result = false
-  # starting_location = convert_location(start)
-  # ending_location = convert_location(finish)
-  #  start_row, start_column = starting_location
-  # end_row, end_column = ending_location
-  #  if color == 'black' && end_row == start_row - 1
-  #    if end_column == start_column - 1 || end_column == start_column + 1
-  #      result = true
-  #    end
-  #  elsif color == 'white' && end_row == start_row + 1
-  #    if end_column == start_column - 1 || end_column == start_column + 1
-  #      result = true
-  #    end
-  #  end
-  #  result
-  # end
 
   def move_piece(start, finish)
     starting_location = convert_location(start)

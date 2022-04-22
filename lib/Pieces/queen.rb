@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
+require_relative '../board'
+require_relative '../game'
+
 # determines color, icon, and legal moves of the Queens
 class Queen
-  attr_accessor :color, :icon
+  attr_accessor :color, :icon, :move_count
 
   def initialize(color, icon)
     @color = color
     @icon = icon
+    @move_count = 0
   end
 
   def forward_moves(start)
@@ -109,7 +113,7 @@ class Queen
     possible_moves
   end
 
-  def possible_moves
-    left_moves + right_moves + forward_moves + backward_moves + up_left_moves + up_right_moves + down_left_moves + down_right_moves
+  def possible_moves_for_piece(start)
+    left_moves(start) + right_moves(start) + forward_moves(start) + backward_moves(start) + up_left_moves(start) + up_right_moves(start) + down_left_moves(start) + down_right_moves(start)
   end
 end
