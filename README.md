@@ -1,2 +1,2 @@
 # chess
-A classic game of chess showcasing object-oriented programming with Ruby
+A command line game of chess showcasing object-oriented programming with Ruby.
