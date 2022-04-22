@@ -96,7 +96,7 @@ class Board
       end
     end
   end
-  
+
   # private method?
   def convert_location(location)
     column_conversion = Hash[a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8]
@@ -130,18 +130,36 @@ class Board
     end
   end
 
+  # not going to need this eventually
   def legal_finish?(finish, color)
     ending_location = convert_location(finish)
     ending_square = retrieve_square(ending_location)
     ending_square.piece.nil? || ending_square.piece.color != color
   end
 
-  def legal_move_for_piece?(start, finish)
+  def possible_moves(start)
     starting_location = convert_location(start)
-    ending_location = convert_location(finish)
     starting_square = retrieve_square(starting_location)
-    ending_square = retrieve_square(ending_location)
-    starting_square.piece.legal_move?(starting_location, ending_location, starting_square.piece, ending_square.piece)
+    starting_square.piece.possible_moves(starting_location)
+  end
+
+  def possible_moves_on_board(start)
+    possible_moves = possible_moves(start)
+    possible_moves.select do |location|
+      on_the_board?(location)
+    end
+  end
+
+  def bishop_moves(start)
+    starting_location = convert_location(start)
+    row, column = starting_location
+    possible_moves_on_board = possible_moves_on_board(start)
+    possible_moves_on_board.each do |location|
+      if retrieve_square.piece.nil?
+
+      elsif retrieve_square
+      end
+    end
   end
 
   # used by board class
@@ -163,60 +181,12 @@ class Board
     end
   end
 
-  def up_left_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    row, column = starting_location
-    results = []
-    row += 1
-    column -= 1
-    until ending_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      row += 1
-      column -= 1
-    end
-    !results.include?(false)
-  end
-
-  def up_right_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    row, column = starting_location
-    results = []
-    row += 1
-    column += 1
-    until ending_location == [row, column]
-      current_square = retrieve_square([row, column])
-      results << current_square.piece.nil?
-      row += 1
-      column += 1
-    end
-    !results.include?(false)
-  end
-
-  def down_left_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
-    row, column = starting_location
-    results = []
-    row -= 1
-    column -= 1
-    until ending_location == [row, column]
-      results << retrieve_square([row, column]).piece.nil?
-      row -= 1
-      column -= 1
-    end
-    !results.include?(false)
-  end
-
-  def down_right_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
+  def up_left_clear?(starting_location, target_location)
     row, column = starting_location
     results = []
     row -= 1
     column += 1
-    until ending_location == [row, column]
+    until target_location == [row, column]
       results << retrieve_square([row, column]).piece.nil?
       row -= 1
       column += 1
@@ -224,11 +194,48 @@ class Board
     !results.include?(false)
   end
 
-  def diagonal_clear?(start, finish)
-    starting_location = convert_location(start)
-    ending_location = convert_location(finish)
+  def up_right_clear?(starting_location, target_location)
+    row, column = starting_location
+    results = []
+    row -= 1
+    column -= 1
+    until target_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
+      row -= 1
+      column -= 1
+    end
+    !results.include?(false)
+  end
+
+  def down_left_clear?(starting_location, target_location)
+    row, column = starting_location
+    results = []
+    row += 1
+    column += 1
+    until target_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
+      row += 1
+      column += 1
+    end
+    !results.include?(false)
+  end
+
+  def down_right_clear?(starting_location, target_location)
+    row, column = starting_location
+    results = []
+    row += 1
+    column -= 1
+    until target_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
+      row += 1
+      column -= 1
+    end
+    !results.include?(false)
+  end
+
+  def diagonal_clear?(starting_location, target_location)
     start_row, start_column = starting_location
-    end_row, end_column = ending_location
+    end_row, end_column = target_location
     if end_row > start_row && end_column < start_column
       up_left_clear?(start, finish)
     elsif end_row > start_row && end_column > start_column
