@@ -89,6 +89,14 @@ class Board
     puts '  a  b  c  d  e  f  g  h'
   end
 
+  def retrieve_square(location)
+    @grid.each do |row|
+      row.each do |square|
+        return square if square.location == location
+      end
+    end
+  end
+  
   # private method?
   def convert_location(location)
     column_conversion = Hash[a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8]
@@ -136,14 +144,6 @@ class Board
     starting_square.piece.legal_move?(starting_location, ending_location, starting_square.piece, ending_square.piece)
   end
 
-  def retrieve_square(location)
-    @grid.each do |row|
-      row.each do |square|
-        return square if square.location == location
-      end
-    end
-  end
-
   # used by board class
   def retrieve_class(location)
     actual_loc = convert_location(location)
@@ -170,13 +170,10 @@ class Board
     results = []
     row += 1
     column -= 1
-    i = 1
-    until i == 9 || ending_location == [row, column]
-      current_square = retrieve_square([row, column])
-      results << current_square.piece.nil?
+    until ending_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
       row += 1
       column -= 1
-      i += 1
     end
     !results.include?(false)
   end
@@ -188,13 +185,11 @@ class Board
     results = []
     row += 1
     column += 1
-    i = 1
-    until i == 9 || ending_location == [row, column]
+    until ending_location == [row, column]
       current_square = retrieve_square([row, column])
       results << current_square.piece.nil?
       row += 1
       column += 1
-      i += 1
     end
     !results.include?(false)
   end
@@ -206,13 +201,10 @@ class Board
     results = []
     row -= 1
     column -= 1
-    i = 1
-    until i == 9 || ending_location == [row, column]
-      current_square = retrieve_square([row, column])
-      results << current_square.piece.nil?
+    until ending_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
       row -= 1
       column -= 1
-      i += 1
     end
     !results.include?(false)
   end
@@ -224,13 +216,10 @@ class Board
     results = []
     row -= 1
     column += 1
-    i = 1
-    until i == 9 || ending_location == [row, column]
-      current_square = retrieve_square([row, column])
-      results << current_square.piece.nil?
+    until ending_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
       row -= 1
       column += 1
-      i += 1
     end
     !results.include?(false)
   end
@@ -257,12 +246,9 @@ class Board
     row, column = starting_location
     results = []
     row += 1
-    i = 1
-    until i == 9 || ending_location == [row, column]
-      retrieve_piece([row, column])
-      results << @current_piece.nil?
+    until ending_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
       row += 1
-      i += 1
     end
     !results.include?(false)
   end
@@ -273,12 +259,9 @@ class Board
     row, column = starting_location
     results = []
     row -= 1
-    i = 1
-    until i == 9 || ending_location == [row, column]
-      retrieve_piece([row, column])
-      results << @current_piece.nil?
+    until ending_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
       row -= 1
-      i += 1
     end
     !results.include?(false)
   end
@@ -289,12 +272,9 @@ class Board
     row, column = starting_location
     results = []
     column -= 1
-    i = 1
-    until i == 9 || ending_location == [row, column]
-      retrieve_piece([row, column])
-      results << @current_piece.nil?
+    until ending_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
       column -= 1
-      i += 1
     end
     !results.include?(false)
   end
@@ -305,12 +285,9 @@ class Board
     row, column = starting_location
     results = []
     column += 1
-    i = 1
-    until i == 9 || ending_location == [row, column]
-      retrieve_piece([row, column])
-      results << @current_piece.nil?
+    until ending_location == [row, column]
+      results << retrieve_square([row, column]).piece.nil?
       column += 1
-      i += 1
     end
     !results.include?(false)
   end

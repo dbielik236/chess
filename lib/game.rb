@@ -48,11 +48,11 @@ class Game
   end
 
   def establish_computer
-    if @human.color == 'white'
-      @computer = Computer.new('black')
-    else
-      @computer = Computer.new('white')
-    end
+    @computer = if @human.color == 'white'
+                  Computer.new('black')
+                else
+                  Computer.new('white')
+                end
   end
 
   def establish_current_player
@@ -93,16 +93,16 @@ class Game
     "#{column}#{row}"
   end
 
-  def in_check?(ending_location)
-    if @current_player == @human && @human.color == 'white'
-      color = 'black'
-    elsif current_player == @human && @human.color == 'black'
-      color = 'white'
-    elsif @current_player == @computer && @computer.color == 'white'
-      color = 'black'
-    elsif @current_player == @computer && @computer.color == 'black'
-      color = 'white'
+  def change_color
+    if @current_player.color == 'white'
+      'black'
+    elsif current_player.color == 'black'
+      'white'
     end
+  end
+
+  def in_check?(ending_location)
+    color = change_color
     @results = []
     list = create_list
     list.each do |starting_location|
@@ -134,16 +134,16 @@ class Game
   end
 
   # is this being used?
-  def piece_is_a_king?(location)
-    @board.retrieve_class(location) == King
-  end
+  # def piece_is_a_king?(location)
+  #  @board.retrieve_class(location) == King
+  # end
 
   def king_is_in_check?
-    if @current_player == @human
-      color = @human.color
-    else
-      color = @computer.color
-    end
+    color = if @current_player == @human
+              @human.color
+            else
+              @computer.color
+            end
     location = @board.retrieve_location(King, color)
     chess_notation_location = revert_location(location)
     in_check?(chess_notation_location)
@@ -169,13 +169,12 @@ class Game
       [row - 1, column + 1]
     ]
     possible_moves.each do |loc|
-      # ???
       if @board.on_the_board?(loc) && @board.legal_finish?(revert_location(loc), color)
         results << in_check?(revert_location(loc))
       end
     end
     results << in_check?(revert_location(location))
-    !results.include?(false) && results[0] != nil
+    !results.include?(false) && !results[0].nil?
   end
 
   def pieces_cannot_be_taken_out?
@@ -467,33 +466,34 @@ class Game
   end
 
   # is this being used anywhere?
-  def will_put_king_in_check?(location)
-    in_check?(location)
+  # def will_put_king_in_check?(location)
+  #  in_check?(location)
+  # end
+
+  def computer_choice
+    @computer_choice = true
+    @starting_choice = random_square until @board.legal_start?(@starting_choice, @current_player.color)
+    @ending_choice = random_square
+    until @board.legal_finish?(@ending_choice, @current_player.color) &&
+          @board.legal_move_for_piece?(@starting_choice, @ending_choice)
+      @ending_choice = random_square
+    end
+    starting_choice_class = @board.retrieve_class(@starting_choice)
+    if starting_choice_class == Pawn && !@board.pawn_path_clear?(@starting_choice, @ending_choice, @current_player.color)
+      @computer_choice = false
+    elsif starting_choice_class == Bishop && !@board.diagonal_clear?(@starting_choice, @ending_choice)
+      @computer_choice = false
+    elsif starting_choice_class == Rook && !@board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
+      @computer_choice = false
+    elsif starting_choice_class == Queen && !@board.all_clear?(@starting_choice, @ending_choice)
+      @computer_choice = false
+    end
   end
 
   def computer_turn
-    choice = false
-    @starting_choice = random_square
-    # checks to makes sure that the player has a piece there
-    until @board.legal_start?(@starting_choice, @current_player.color)
-      @starting_choice = random_square
-    end
-    until choice == true
-      @ending_choice = random_square
-      starting_choice_class = @board.retrieve_class(@starting_choice)
-      if @board.legal_finish?(@ending_choice, @current_player.color) && @board.legal_move_for_piece?(@starting_choice, @ending_choice)
-        if starting_choice_class == Pawn
-          choice = @board.pawn_path_clear?(@starting_choice, @ending_choice, @current_player.color)
-        elsif starting_choice_class == Bishop
-          choice = @board.diagonal_clear?(@starting_choice, @ending_choice)
-        elsif starting_choice_class == Rook
-          choice = @board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
-        elsif starting_choice_class == Queen
-          choice = @board.all_clear?(@starting_choice, @ending_choice)
-        else
-          choice = true
-        end
-      end
+    computer_choice
+    until @computer_choice == true
+      computer_choice
     end
   end
 
@@ -509,6 +509,7 @@ class Game
       save_game(self)
     end
     return if @castle == 1
+
     # checks to see if the player has used the correct format
     until @board.correct_format?(@starting_choice)
       incorrect_format_prompt
@@ -774,9 +775,9 @@ class Game
       if @current_player == @computer
         display_computer_making_turn
         sleep(0.5)
-        print "."
+        print '.'
         sleep(0.5)
-        print "."
+        print '.'
         sleep(0.5)
         print ".\n"
         sleep(0.5)
