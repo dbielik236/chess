@@ -10,7 +10,7 @@ class King
     @move_count = 0
   end
 
-  def legal_move?(start, finish, starting_piece, ending_piece)
+  def possible_moves(start, _starting_piece, _ending_piece)
     start_row, start_column = start
     possible_moves = []
     # forward
@@ -29,6 +29,6 @@ class King
     possible_moves << [start_row - 1, start_column - 1]
     # down right
     possible_moves << [start_row - 1, start_column + 1]
-    possible_moves.include?(finish)
+    possible_moves
   end
 end

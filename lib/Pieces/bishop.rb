@@ -10,7 +10,7 @@ class Bishop
     @move_count = 0
   end
 
-  def legal_move?(start, finish, _starting_piece, _ending_piece)
+  def possible_moves(start, _starting_piece, _ending_piece)
     start_row, start_column = start
     possible_moves = []
     # up right diagonal
@@ -40,6 +40,6 @@ class Bishop
       start_column -= 1
       possible_moves << [start_row, start_column]
     end
-    possible_moves.include?(finish)
+    possible_moves
   end
 end

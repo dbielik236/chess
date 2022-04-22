@@ -10,7 +10,7 @@ class Pawn
     @move_count = 0
   end
 
-  def legal_move?(start, finish, starting_piece, ending_piece)
+  def legal_move?(start, starting_piece, ending_piece)
     start_row, start_column = start
 
     # for white pawns
@@ -27,8 +27,7 @@ class Pawn
       possible_moves << [start_row + 1, start_column + 1] unless ending_piece.nil?
       possible_moves << [start_row + 1, start_column - 1] unless ending_piece.nil?
 
-      # en passant only if... (needs to be added)?
-      possible_moves.include?(finish)
+      possible_moves
 
     elsif starting_piece.color == 'black'
       possible_moves = []
@@ -43,8 +42,7 @@ class Pawn
       possible_moves << [start_row - 1, start_column + 1] unless ending_piece.nil?
       possible_moves << [start_row - 1, start_column - 1] unless ending_piece.nil?
 
-      # en passant only if... (needs to be added)?
-      possible_moves.include?(finish)
+      possible_moves
     end
   end
 end

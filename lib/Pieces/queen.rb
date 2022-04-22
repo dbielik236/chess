@@ -10,7 +10,7 @@ class Queen
     @move_count = 0
   end
 
-  def legal_move?(start, finish, starting_piece, ending_piece)
+  def possible_moves(start)
     start_row, start_column = start
     possible_moves = []
     # up right diagonal
@@ -64,6 +64,6 @@ class Queen
       start_column += 1
       possible_moves << [start_row, start_column]
     end
-    possible_moves.include?(finish)
+    possible_moves
   end
 end

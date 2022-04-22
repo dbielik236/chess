@@ -10,7 +10,7 @@ class Rook
     @move_count = 0
   end
 
-  def moves(start)
+  def possible_moves(start)
     start_row, start_column = start
     possible_moves = []
     # forward
@@ -36,8 +36,6 @@ class Rook
       start_column += 1
       possible_moves << [start_row, start_column]
     end
-    possible_moves.include?(finish)
-
-    # castle only if king and rook haven't moved?
+    possible_moves
   end
 end
