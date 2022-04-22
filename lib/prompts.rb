@@ -15,8 +15,12 @@ module Display
     puts 'Please type l to load a saved game or type n to play a new game.'
   end
 
-  def player_name_prompt
-    puts 'What is your name?'
+  def player1_name_prompt
+    puts 'Who is player 1?'
+  end
+
+  def player2_name_prompt
+    puts 'Who is player 2?'
   end
 
   def player_color_prompt
@@ -28,7 +32,7 @@ module Display
   end
 
   def starting_piece_prompt
-    puts "#{@human.name}, choose a piece to move (for example a1 or f7). (Type c to castle or s to save.)"
+    puts "#{@current_player.name}, choose a piece to move (for example a1 or f7). (Type c to castle or s to save.)"
   end
 
   def illegal_starting_location_prompt
@@ -61,10 +65,6 @@ module Display
 
   def display_computer_making_turn
     print 'The computer is thinking'
-  end
-
-  def display_computer_turn
-    puts "The computer moved from #{@starting_choice} to #{@ending_choice}."
   end
 
   def king_is_in_check_prompt

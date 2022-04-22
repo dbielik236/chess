@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # establishes human's name and color choice
-class Human
+class Player
   attr_accessor :name, :color
 
   def initialize(name, color)

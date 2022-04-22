@@ -21,8 +21,8 @@ class Game
 
   def initialize
     @board = Board.new
-    @human = nil
-    @computer = nil
+    @player1 = nil
+    @player2 = nil
     @current_player = nil
     @check = false
     @num = 0
@@ -31,8 +31,8 @@ class Game
     @ending_choice = nil
   end
 
-  def establish_player
-    player_name_prompt
+  def establish_player1
+    player1_name_prompt
     name = gets.chomp.strip
     player_color_prompt
     color = gets.chomp.strip
@@ -40,36 +40,30 @@ class Game
       color_error_prompt
       color = gets.chomp
     end
-    @human = if color == 'w'
-               Human.new(name, 'white')
-             else
-               Human.new(name, 'black')
-             end
+    @player1 = if color == 'w'
+                 Player.new(name, 'white')
+               else
+                 Player.new(name, 'black')
+               end
   end
 
-  def establish_computer
-    @computer = if @human.color == 'white'
-                  Computer.new('black')
-                else
-                  Computer.new('white')
-                end
+  def establish_player2
+    player2_name_prompt
+    name = gets.chomp.strip
+    @player2 = if @player1.color == 'black'
+                 Player.new(name, 'white')
+
+               else
+                 Player.new(name, 'black')
+               end
   end
 
   def establish_current_player
-    if @human.color == 'white'
-      @current_player = @human
+    if @player1.color == 'white'
+      @current_player = @player1
     else
-      @current_player = @computer
+      @current_player = @player2
     end
-  end
-
-  def random_square
-    row_choices = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-    random_choice = []
-    random_choice << row_choices.sample
-    column_choices = ['1', '2', '3', '4', '5', '6', '7', '8']
-    random_choice << column_choices.sample
-    random_choice.join('')
   end
 
   def create_list
@@ -133,16 +127,11 @@ class Game
     !@results[0].nil?
   end
 
-  # is this being used?
-  # def piece_is_a_king?(location)
-  #  @board.retrieve_class(location) == King
-  # end
-
   def king_is_in_check?
-    color = if @current_player == @human
-              @human.color
+    color = if @current_player == @player1
+              @player1.color
             else
-              @computer.color
+              @player2.color
             end
     location = @board.retrieve_location(King, color)
     chess_notation_location = revert_location(location)
@@ -150,10 +139,10 @@ class Game
   end
 
   def king_has_no_moves?
-    if @current_player == @human
-      color = @human.color
+    if @current_player == @player1
+      color = @player1.color
     else
-      color = @computer.color
+      color = @player2.color
     end
     location = @board.retrieve_location(King, color)
     row, column = location
@@ -344,7 +333,7 @@ class Game
     @results.each do |location|
       if @board.retrieve_class(location) == Queen
         queen_location = @board.convert_location(location)
-        queen_row, queen_column =queen_location
+        queen_row, queen_column = queen_location
         if king_row > queen_row
           until king_location == [queen_row, queen_column]
             list.each do |starting_location|
@@ -465,39 +454,7 @@ class Game
       piece_cannot_be_moved_into_the_path_of_rooks?
   end
 
-  # is this being used anywhere?
-  # def will_put_king_in_check?(location)
-  #  in_check?(location)
-  # end
-
-  def computer_choice
-    @computer_choice = true
-    @starting_choice = random_square until @board.legal_start?(@starting_choice, @current_player.color)
-    @ending_choice = random_square
-    until @board.legal_finish?(@ending_choice, @current_player.color) &&
-          @board.legal_move_for_piece?(@starting_choice, @ending_choice)
-      @ending_choice = random_square
-    end
-    starting_choice_class = @board.retrieve_class(@starting_choice)
-    if starting_choice_class == Pawn && !@board.pawn_path_clear?(@starting_choice, @ending_choice, @current_player.color)
-      @computer_choice = false
-    elsif starting_choice_class == Bishop && !@board.diagonal_clear?(@starting_choice, @ending_choice)
-      @computer_choice = false
-    elsif starting_choice_class == Rook && !@board.vertical_horizontal_clear?(@starting_choice, @ending_choice)
-      @computer_choice = false
-    elsif starting_choice_class == Queen && !@board.all_clear?(@starting_choice, @ending_choice)
-      @computer_choice = false
-    end
-  end
-
-  def computer_turn
-    computer_choice
-    until @computer_choice == true
-      computer_choice
-    end
-  end
-
-  def human_turn
+  def player_turn
     @castle = 0
     starting_piece_prompt
     @starting_choice = gets.chomp
@@ -511,13 +468,8 @@ class Game
     return if @castle == 1
 
     # checks to see if the player has used the correct format
-    until @board.correct_format?(@starting_choice)
+    until @board.correct_format?(@starting_choice) && @board.legal_start?(@starting_choice, @current_player.color)
       incorrect_format_prompt
-      @starting_choice = gets.chomp.strip
-    end
-    # checks to makes sure that the player has a piece there
-    until @board.legal_start?(@starting_choice, @current_player.color)
-      illegal_starting_location_prompt
       @starting_choice = gets.chomp.strip
     end
     ending_square_prompt
@@ -566,20 +518,15 @@ class Game
       end
     end
     if @ending_choice == 'p'
-      human_turn
+      player_turn
     end
   end
 
-  # is this being used anywhere?
-  def empty_square?(location)
-    @board.empty_square?([location])
-  end
-
   def switch_current_player
-    if @current_player == @computer
-      @current_player = @human
-    elsif @current_player == @human
-      @current_player = @computer
+    if @current_player == @player2
+      @current_player = @player1
+    elsif @current_player == @player1
+      @current_player = @player2
     end
   end
 
@@ -688,7 +635,7 @@ class Game
     end
   end
 
-  def pawn_promotion_human
+  def pawn_promotion_player
     row = last_row(@current_player.color)
     row.each do |loc|
       if @board.retrieve_class(revert_location(loc)) == Pawn
@@ -714,55 +661,33 @@ class Game
   end
 
   def one_turn
-    if @current_player == @human
-      if king_is_in_check?
-        king_is_in_check_prompt
-      end
-      human_turn
-      # temporarily move the pieces to check
-      unless @castle == 1
-        move_pieces
-      end
-      until king_is_in_check? == false || check_mate?
-        # move the pieces back
-        move_pieces_back
-        move_will_put_king_in_check_prompt
-        human_turn
-        move_pieces
-      end
-    else
-      if king_is_in_check?
-        computer_king_is_in_check_display
-      end
-      computer_turn
+    if king_is_in_check?
+      king_is_in_check_prompt
+    end
+    player_turn
+    # temporarily move the pieces to check
+    unless @castle == 1
       move_pieces
-      until king_is_in_check? == false || check_mate?
-        move_pieces_back
-        computer_turn
-        move_pieces
-      end
+    end
+    until king_is_in_check? == false || check_mate?
+      # move the pieces back
+      move_pieces_back
+      move_will_put_king_in_check_prompt
+      player_turn
+      move_pieces
     end
   end
 
   def first_turn
-    if @current_player == @human
-      human_turn
-    else
-      computer_turn
-    end
-    if @current_player == @computer
-      display_computer_turn
-    end
-    unless @castle == 1
-      move_pieces
-    end
+    player_turn
+    move_pieces
     switch_current_player
   end
 
   def establish_game
     @board.display
-    establish_player
-    establish_computer
+    establish_player1
+    establish_player2
     establish_current_player
     # first turn to start the game
     first_turn
@@ -772,24 +697,7 @@ class Game
     until check_mate?
       @board.display
       one_turn
-      if @current_player == @computer
-        display_computer_making_turn
-        sleep(0.5)
-        print '.'
-        sleep(0.5)
-        print '.'
-        sleep(0.5)
-        print ".\n"
-        sleep(0.5)
-      end
-      if @current_player == @computer
-        display_computer_turn
-      end
-      if @current_player == @human
-        pawn_promotion_human
-      elsif @current_player == @computer
-        promote_piece('q')
-      end
+      pawn_promotion_player
       switch_current_player
     end
     if check_mate?
