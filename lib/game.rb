@@ -3,7 +3,6 @@
 require_relative 'board'
 require_relative 'prompts'
 require_relative 'human'
-require_relative 'computer'
 require_relative './pieces/pawn'
 require_relative './pieces/rook'
 require_relative './pieces/knight'

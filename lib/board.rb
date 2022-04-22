@@ -348,25 +348,6 @@ class Board
     end
   end
 
-  # I don't think this is being used
-  # def pawn_can_take_king?(start, finish, color)
-  #  result = false
-  # starting_location = convert_location(start)
-  # ending_location = convert_location(finish)
-  #  start_row, start_column = starting_location
-  # end_row, end_column = ending_location
-  #  if color == 'black' && end_row == start_row - 1
-  #    if end_column == start_column - 1 || end_column == start_column + 1
-  #      result = true
-  #    end
-  #  elsif color == 'white' && end_row == start_row + 1
-  #    if end_column == start_column - 1 || end_column == start_column + 1
-  #      result = true
-  #    end
-  #  end
-  #  result
-  # end
-
   def move_piece(start, finish)
     starting_location = convert_location(start)
     ending_location = convert_location(finish)

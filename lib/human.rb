@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# establishes human's name and color choice
+# establishes player's name and color choice
 class Player
   attr_accessor :name, :color
 
