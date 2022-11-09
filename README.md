@@ -4,6 +4,7 @@ A command line game of chess showcasing object-oriented programming with Ruby.
 Play it here: https://replit.com/@dbielik236/chess#main.rb
 
 Screen Recording
+
 https://user-images.githubusercontent.com/95592670/200963001-ebe471c8-4bee-4573-9945-df1125f7f5bd.mov
 
 ## Reflection:
